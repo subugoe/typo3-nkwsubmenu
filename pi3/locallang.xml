@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin &quot;tx_nkwsubmenu_pi3&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="keyword">Keyword</label>
+			<label index="selectedKeyword">Ausgewähltes Schlagwort</label>
+			<label index="keywordsOfThisSite">Keywords</label>
+			<label index="contentOfThisSite">Contents</label>
+			<label index="subpages">Subpages</label>
+			<label index="noHits">No hits for: </label>
+			<label index="hint">Alphabetische Sortierung</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="keyword">Schlagwort</label>
+			<label index="selectedKeyword">Ausgewähltes Schlagwort</label>
+			<label index="keywordsOfThisSite">Schlagworte dieser Seite</label>
+			<label index="contentOfThisSite">Inhalte dieser Seite</label>
+			<label index="subpages">Unterseiten</label>
+			<label index="noHits">Keine Treffer für: </label>
+			<label index="hint">Alphabetische Sortierung</label>
+		</languageKey>
+	</data>
+</T3locallang>

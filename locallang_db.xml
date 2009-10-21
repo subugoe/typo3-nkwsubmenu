@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'nkwsubmenu'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tt_content.list_type_pi1">SUB Menu</label>
+			<label index="tt_content.list_type_pi2">SUB Infobox</label>
+			<label index="tt_content.list_type_pi3">SUB Keywordlist</label>
+			<label index="pages.tx_nkwsubmenu_in_menu">SUB Menu</label>
+			<label index="pages.tx_nkwsubmenu_in_menu.I.0">nothing special</label>
+			<label index="pages.tx_nkwsubmenu_in_menu.I.1">Menu Item</label>
+			<label index="pages.tx_nkwsubmenu_in_menu.I.2">exclude fom menu</label>
+			<label index="pages.tx_nkwsubmenu_picture">Picture</label>
+			<label index="pages.tx_nkwsubmenu_picture_follow">Bild vererben</label>
+			<label index="pages.tx_nkwsubmenu_picture_nofollow">vererbtes Bild ignorieren</label>
+			<label index="pages.tx_nkwsubmenu_knot">Knot</label>
+			<label index="pages.tx_nkwsubmenu_usecontent">Content Elemente in menu</label>
+			<label index="pages.tx_nkwsubmenu_hideinfobox">Infobox verstecken</label>
+			<label index="pages.tx_nkwsubmenu_knotheader">Knot Header Picture</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="tt_content.list_type_pi1">SUB Menu</label>
+			<label index="tt_content.list_type_pi2">SUB Infobox</label>
+			<label index="tt_content.list_type_pi3">SUB Keywordlist</label>
+			<label index="pages.tx_nkwsubmenu_in_menu">SUB Menu</label>
+			<label index="pages.tx_nkwsubmenu_in_menu.I.0">nothing special</label>
+			<label index="pages.tx_nkwsubmenu_in_menu.I.1">Menu Item</label>
+			<label index="pages.tx_nkwsubmenu_in_menu.I.2">exclude fom menu</label>
+			<label index="pages.tx_nkwsubmenu_picture">Picture</label>
+			<label index="pages.tx_nkwsubmenu_picture_follow">Bild vererben</label>
+			<label index="pages.tx_nkwsubmenu_picture_nofollow">vererbtes Bild ignorieren</label>
+			<label index="pages.tx_nkwsubmenu_knot">Knoten</label>
+			<label index="pages.tx_nkwsubmenu_usecontent">Content Elemente im Menü</label>
+			<label index="pages.tx_nkwsubmenu_hideinfobox">Infobox verstecken</label>
+			<label index="pages.tx_nkwsubmenu_knotheader">Knotenkopfgrafik</label>
+		</languageKey>
+	</data>
+</T3locallang>

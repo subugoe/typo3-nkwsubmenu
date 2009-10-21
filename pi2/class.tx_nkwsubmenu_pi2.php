@@ -1,0 +1,126 @@
+<?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2009 Nils K. Windisch <windisch@sub.uni-goettingen.de>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+
+require_once(PATH_tslib.'class.tslib_pibase.php');
+require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
+
+/**
+ * Plugin 'Infobox' for the 'nkwsubmenu' extension.
+ *
+ * @author	Nils K. Windisch <windisch@sub.uni-goettingen.de>
+ * @package	TYPO3
+ * @subpackage	tx_nkwsubmenu
+ */
+class tx_nkwsubmenu_pi2 extends tx_nkwlib {
+	var $prefixId      = 'tx_nkwsubmenu_pi2';		// Same as class name
+	var $scriptRelPath = 'pi2/class.tx_nkwsubmenu_pi2.php';	// Path to this script relative to the extension dir.
+	var $extKey        = 'nkwsubmenu';	// The extension key.
+	var $pi_checkCHash = true;
+	
+	/**
+	 * The main method of the PlugIn
+	 *
+	 * @param	string		$content: The PlugIn content
+	 * @param	array		$conf: The PlugIn configuration
+	 * @return	The content that is displayed on the website
+	 */
+	function main($content,$conf)	{
+		$this->conf=$conf;
+		$this->pi_setPiVarDefaults();
+		$this->pi_loadLL();
+
+
+		// basics
+		$weAreHerePageID = $GLOBALS['TSFE']->id; // page ID
+		$saveATagParams = $GLOBALS['TSFE']->ATagParams; // T3 hack
+		$lang = $GLOBALS["TSFE"]->sys_page->sys_language_uid;
+		
+
+		$id = $this->checkForAlienContent($weAreHerePageID);
+		if (!$id)
+			$id = $weAreHerePageID;
+	
+		// get page content
+		$pageContent = $this->pageContent($id, $lang);
+		if ($pageContent)
+		{
+			foreach ($pageContent AS $key => $value)
+				$tmp .= "<li><a href='#c".$value["uid"]."'>".$value["header"]."</a></li>";
+			if ($tmp)
+			{
+				$contentContent .= "<span class='infoboxHeader'>".$this->pi_getLL("contentOfThisSite").":</span>";
+				$contentContent .= "<ul>".$tmp."</ul>";
+			}
+			unset($tmp);
+		}
+		else
+			$contentContent = $this->pi_getLL("noContentOfThisSite");
+		$contentContent = "<div id='crightContent'>".$contentContent."</div>";
+
+
+		// get children
+		$children = $this->pageHasChild($weAreHerePageID);
+		if ($children)
+		{
+			foreach ($children AS $key => $value)
+				$tmp .= "<li>".$this->pi_LinkToPage($this->formatString($value["title"]),$value["uid"],"","")."</li>";
+			if ($tmp)
+			{
+				$contentChildren .= "<span class='infoboxHeader'>".$this->pi_getLL("subpages").":</span>";
+				$contentChildren .= "<ul>".$tmp."</ul>";
+			}
+			unset($tmp);
+		}
+		else
+			$contentChildren = $this->pi_getLL("noSubpages");
+		$contentChildren = "<div id='crightPages'>".$contentChildren."</div>";
+
+
+		// keywords
+		#debug("lang: ".$lang);
+		$pageKeywordsList = $this->pageKeywordsList($weAreHerePageID, $lang);
+		#debug($pageKeywordsList);
+		#debug("page id: ".$weAreHerePageID);
+		foreach($pageKeywordsList AS $key => $value)
+			$contentKeywords .= "<li>".$value."</li>";
+		$contentKeywords = "<div id='crightKeywords'><span class='infoboxHeader'>".$this->pi_getLL("keywordsOfThisSite").":</span><ul>".$contentKeywords."</ul></div>";
+
+
+		// collect
+		$content = $contentContent.$contentChildren.$contentKeywords;
+
+
+		// return
+		return $this->pi_wrapInBaseClass($content);
+
+
+	}
+}
+
+
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi2/class.tx_nkwsubmenu_pi2.php'])
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi2/class.tx_nkwsubmenu_pi2.php']);
+
+?>
