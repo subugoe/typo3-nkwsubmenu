@@ -52,9 +52,9 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 
 
 		// basics
-		$weAreHerePageID = $GLOBALS['TSFE']->id; // page ID
+		$weAreHerePageID = $this->getPageUID();
 		$saveATagParams = $GLOBALS['TSFE']->ATagParams; // T3 hack
-		$lang = $GLOBALS["TSFE"]->sys_page->sys_language_uid;
+		$lang = $this->getLanguage();
 		
 
 		$id = $this->checkForAlienContent($weAreHerePageID);
@@ -98,13 +98,12 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 
 
 		// keywords
-		#debug("lang: ".$lang);
-		$pageKeywordsList = $this->pageKeywordsList($weAreHerePageID, $lang);
-		#debug($pageKeywordsList);
-		#debug("page id: ".$weAreHerePageID);
-		foreach($pageKeywordsList AS $key => $value)
-			$contentKeywords .= "<li>".$value."</li>";
-		$contentKeywords = "<div id='crightKeywords'><span class='infoboxHeader'>".$this->pi_getLL("keywordsOfThisSite").":</span><ul>".$contentKeywords."</ul></div>";
+		$contentKeywords = "<div id='crightKeywords'>";
+		$contentKeywords .= "<span class='infoboxHeader'>".$this->pi_getLL("keywordsOfThisSite").":</span>";
+		$contentKeywords .= "<ul>";
+		$contentKeywords .= $this->keywordsForPage($weAreHerePageID, $lang, "infobox");
+		$contentKeywords .= "</ul>";
+		$contentKeywords .= "</div>";
 
 
 		// collect
