@@ -61,7 +61,7 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 		// basics
 		$weAreHerePageID = $GLOBALS['TSFE']->id; // page ID
 		$saveATagParams = $GLOBALS['TSFE']->ATagParams; // T3 hack
-		$lang = $GLOBALS["TSFE"]->sys_page->sys_language_uid;
+		$lang = $this->getLanguage();
 		$knot = $this->knotID($weAreHerePageID);
 		$pageInfo = $this->pageInfo($weAreHerePageID, $lang);
 
