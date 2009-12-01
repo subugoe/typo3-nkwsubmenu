@@ -26,6 +26,7 @@ $tempColumns = Array (
 				Array("LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.0", "0"),
                 Array("LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.1", "1"),
                 Array("LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.2", "2"),
+                Array("LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.3", "3"),
 			),
 		)
 	),

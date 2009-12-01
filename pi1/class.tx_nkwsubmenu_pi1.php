@@ -68,8 +68,10 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 		// FIRST LEVEL
 
 		// query
+		// get all pages that are menu items (tx_nkwsubmenu_in_menu = '1') or those who are not, but contain a knot (tx_nkwsubmenu_in_menu = '3')
 		$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			"*","pages","tx_nkwsubmenu_in_menu = '1' AND hidden != '1' AND deleted = '0'","","sorting ASC","");
+			#"*","pages","tx_nkwsubmenu_in_menu = '1' AND hidden != '1' AND deleted = '0'","","sorting ASC","");
+			"*","pages","(tx_nkwsubmenu_in_menu = '1' OR tx_nkwsubmenu_in_menu = '3') AND hidden != '1' AND deleted = '0'","","sorting ASC",""); #2009-12-01
 
 		$i1 = 0; // helper
 
@@ -80,6 +82,7 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			$pages[$i1]["uid"] = $row1["uid"];
 			$pages[$i1]["pid"] = $row1["pid"];
 			$pages[$i1]["title"] = $this->formatString($row1["title"]);
+			$pages[$i1]["tx_nkwsubmenu_in_menu"] = $row1["tx_nkwsubmenu_in_menu"]; #2009-12-01
 			$pages[$i1]["tx_nkwsubmenu_picture"] = $row1["tx_nkwsubmenu_picture"];
 			$pages[$i1]["tx_nkwsubmenu_knotheader"] = $row1["tx_nkwsubmenu_knotheader"];
 			$pages[$i1]["tx_nkwsubmenu_picture_follow"] = $row1["tx_nkwsubmenu_picture_follow"];
@@ -235,6 +238,8 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 		}
 
 		$pagesSize = $i1; // helper
+		
+		#debug($pages);
 
 		if ($knot) // if $knot
 		{
@@ -274,6 +279,15 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 
 		}
 
+		// remove pages who contain knots (not active), but don't show up in the menu
+		if (!$knot)
+		{
+			for ($i=0;$i<$pagesSize;$i++)
+				if ($pages[$i]["tx_nkwsubmenu_in_menu"] == 1)
+					$tmp[] = $pages[$i];
+			$pages = $tmp;
+		}
+
 		// FIRST
 		for ($i1=0;$i1<$pagesSize;$i1++)
 		{
@@ -285,7 +299,8 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			// format link
 			if ($pages[$i1]["selected"] == 1)
 			{
-				if ($pages[$i1]["hasChild"])
+				if ($pages[$i1]["hasChild"] && !$pages[$i1]["isKnot"])
+				#if ($pages[$i1]["hasChild"])
 					$menuContent .= "<a class='menu_highlight trigger'>".$pages[$i1]["title"]."</a>";
 				else
 				{
@@ -299,7 +314,8 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			}
 			else if ($pages[$i1]["selected"] == 2 || $pages[$i1]["selected"] == 3)
 			{
-				if ($pages[$i1]["hasChild"])
+				#if ($pages[$i1]["hasChild"])
+				if ($pages[$i1]["hasChild"]  && !$pages[$i1]["isKnot"])
 					$menuContent .= "<a class='menu_highlight_top trigger'>".$pages[$i1]["title"]."</a>";
 				else
 				{
@@ -307,7 +323,6 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 					$menuContent .= $this->pi_LinkToPage($pages[$i1]["title"],$pages[$i1]["uid"],"","");
 					$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack				
 				}
-				
 			}
 			else
 			{

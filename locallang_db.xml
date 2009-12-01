@@ -12,7 +12,8 @@
 			<label index="pages.tx_nkwsubmenu_in_menu">SUB Menu</label>
 			<label index="pages.tx_nkwsubmenu_in_menu.I.0">nothing special</label>
 			<label index="pages.tx_nkwsubmenu_in_menu.I.1">Menu Item</label>
-			<label index="pages.tx_nkwsubmenu_in_menu.I.2">exclude fom menu</label>
+			<label index="pages.tx_nkwsubmenu_in_menu.I.2">exclude from menu</label>
+			<label index="pages.tx_nkwsubmenu_in_menu.I.3">not in menu but with knot</label>
 			<label index="pages.tx_nkwsubmenu_picture">Picture</label>
 			<label index="pages.tx_nkwsubmenu_picture_follow">Bild vererben</label>
 			<label index="pages.tx_nkwsubmenu_picture_nofollow">vererbtes Bild ignorieren</label>
@@ -29,6 +30,7 @@
 			<label index="pages.tx_nkwsubmenu_in_menu.I.0">nothing special</label>
 			<label index="pages.tx_nkwsubmenu_in_menu.I.1">Menu Item</label>
 			<label index="pages.tx_nkwsubmenu_in_menu.I.2">exclude fom menu</label>
+			<label index="pages.tx_nkwsubmenu_in_menu.I.3">not in menu but with knot</label>
 			<label index="pages.tx_nkwsubmenu_picture">Picture</label>
 			<label index="pages.tx_nkwsubmenu_picture_follow">Bild vererben</label>
 			<label index="pages.tx_nkwsubmenu_picture_nofollow">vererbtes Bild ignorieren</label>
