@@ -13,7 +13,7 @@
 			<label index="noSubpages">Diese Seite hat keine Unterseiten.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="keywordsOfThisSite">Schlagworte dieser Seite</label>
+			<label index="keywordsOfThisSite">Schlagwörter dieser Seite</label>
 			<label index="contentOfThisSite">Inhalte dieser Seite</label>
 			<label index="noContentOfThisSite">Dieser Seite hat noch keinen Inhalt</label>
 			<label index="subpages">Unterseiten</label>

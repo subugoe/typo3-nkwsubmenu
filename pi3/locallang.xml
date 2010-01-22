@@ -17,7 +17,7 @@
 		<languageKey index="de" type="array">
 			<label index="keyword">Schlagwort</label>
 			<label index="selectedKeyword">Ausgewähltes Schlagwort</label>
-			<label index="keywordsOfThisSite">Schlagworte dieser Seite</label>
+			<label index="keywordsOfThisSite">Schlagwörter dieser Seite</label>
 			<label index="contentOfThisSite">Inhalte dieser Seite</label>
 			<label index="subpages">Unterseiten</label>
 			<label index="noHits">Keine Treffer für: </label>

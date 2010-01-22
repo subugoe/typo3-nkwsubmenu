@@ -69,14 +69,14 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 				$tmp .= "<li><a href='#c".$value["uid"]."'>".$value["header"]."</a></li>";
 			if ($tmp)
 			{
-				$contentContent .= "<span class='infoboxHeader'>".$this->pi_getLL("contentOfThisSite").":</span>";
+				$contentContent .= "<span class='tx-nkwsubmenu-pi2-header'>".$this->pi_getLL("contentOfThisSite").":</span>";
 				$contentContent .= "<ul>".$tmp."</ul>";
 			}
 			unset($tmp);
 		}
 		else
 			$contentContent = $this->pi_getLL("noContentOfThisSite");
-		$contentContent = "<div id='crightContent'>".$contentContent."</div>";
+		$contentContent = "<div id='tx-nkwsubmenu-pi2-contentlist'>".$contentContent."</div>";
 
 
 		// get children
@@ -87,19 +87,19 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 				$tmp .= "<li>".$this->pi_LinkToPage($this->formatString($value["title"]),$value["uid"],"","")."</li>";
 			if ($tmp)
 			{
-				$contentChildren .= "<span class='infoboxHeader'>".$this->pi_getLL("subpages").":</span>";
+				$contentChildren .= "<span class='tx-nkwsubmenu-pi2-header'>".$this->pi_getLL("subpages").":</span>";
 				$contentChildren .= "<ul>".$tmp."</ul>";
 			}
 			unset($tmp);
 		}
 		else
 			$contentChildren = $this->pi_getLL("noSubpages");
-		$contentChildren = "<div id='crightPages'>".$contentChildren."</div>";
+		$contentChildren = "<div id='tx-nkwsubmenu-pi2-subpagelist'>".$contentChildren."</div>";
 
 
 		// keywords
-		$contentKeywords = "<div id='crightKeywords'>";
-		$contentKeywords .= "<span class='infoboxHeader'>".$this->pi_getLL("keywordsOfThisSite").":</span>";
+		$contentKeywords = "<div id='tx-nkwsubmenu-pi2-keywordlist'>";
+		$contentKeywords .= "<span class='tx-nkwsubmenu-pi2-header'>".$this->pi_getLL("keywordsOfThisSite").":</span>";
 		$contentKeywords .= "<ul>";
 		$contentKeywords .= $this->keywordsForPage($weAreHerePageID, $lang, "infobox");
 		$contentKeywords .= "</ul>";
