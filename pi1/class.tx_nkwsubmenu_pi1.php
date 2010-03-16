@@ -265,7 +265,7 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 
 		if ($knot) // if $knot
 		{
-
+			#$this->dprint("1. ".$pagesSize."-".sizeof($pages));
 			// remove everything from first level that has no active knot
 			for ($i=0;$i<$pagesSize;$i++)
 			{
@@ -277,19 +277,20 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 				}
 			}
 
-			#debug($pages);
-
-
+			#$this->dprint("2. ".$pagesSize."-".sizeof($pages));
+			#$this->dprint($pages);
+			#$pagesSize = sizeof($pages);
 			// remove everything from second level that has no active knot
-			for ($i=0;$i<sizeof($pages);$i++)
-			{
-				for ($ii=0;$ii<sizeof($pages[$i]);$ii++)
+			#for ($i=0;$i<sizeof($pages);$i++)
+			#{
+				#for ($ii=0;$ii<sizeof($pages[$i]);$ii++)
+				for ($ii=0;$ii<sizeof($pages[0]["child"]);$ii++)
 				{
-					if ($pages[$i]["child"][$ii]["isKnot"] && $pages[$i]["child"][$ii]["selected"])
+					if ($pages[0]["child"][$ii]["isKnot"] && $pages[0]["child"][$ii]["selected"])
 					{
-						$tmp = $pages[$i]["child"][$ii]; // tmp save array index with active knot
-						unset($pages[$i]["child"]); // reset pages array
-						$pages[$i] = $tmp; // set pages array with active knot index only
+						$tmp = $pages[0]["child"][$ii]; // tmp save array index with active knot
+						unset($pages[0]["child"]); // reset pages array
+						$pages[0] = $tmp; // set pages array with active knot index only
 					}
 				}
 /*
@@ -303,7 +304,7 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 					}
 				}
 */
-			}
+			#}
 
 			// remove everything from third level that has no active knot
 			for ($i=0;$i<sizeof($pages[0]["child"]);$i++)
