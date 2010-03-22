@@ -63,9 +63,27 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 
 		// query
 		// get all pages that are menu items (tx_nkwsubmenu_in_menu = '1') or those who are not, but contain a knot (tx_nkwsubmenu_in_menu = '3')
-		$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			#"*","pages","tx_nkwsubmenu_in_menu = '1' AND hidden != '1' AND deleted = '0'","","sorting ASC","");
-			"*","pages","(tx_nkwsubmenu_in_menu = '1' OR tx_nkwsubmenu_in_menu = '3') AND hidden != '1' AND deleted = '0'","","sorting ASC",""); #2009-12-01
+		if ($knot)
+		{
+			$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				"*",
+				"pages",
+				"uid = '".$knot."' AND hidden != '1' AND deleted = '0'",
+				"",
+				"sorting ASC",
+				""); #2009-12-01
+		}
+		else
+		{
+			$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				#"*","pages","tx_nkwsubmenu_in_menu = '1' AND hidden != '1' AND deleted = '0'","","sorting ASC","");
+				"*",
+				"pages",
+				"(tx_nkwsubmenu_in_menu = '1' OR tx_nkwsubmenu_in_menu = '3') AND hidden != '1' AND deleted = '0'",
+				"",
+				"sorting ASC",
+				""); #2009-12-01
+		}
 
 		$i1 = 0; // helper
 
