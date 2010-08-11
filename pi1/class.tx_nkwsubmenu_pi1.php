@@ -21,10 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
-require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
-
+require_once(t3lib_extMgm::extPath('nkwlib') . 'class.tx_nkwlib.php');
 /**
  * Plugin 'SUB Menu' for the 'nkwsubmenu' extension.
  *
@@ -33,13 +30,10 @@ require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
  * @subpackage	tx_nkwsubmenu
  */
 class tx_nkwsubmenu_pi1 extends tx_nkwlib {
-	var $prefixId      = 'tx_nkwsubmenu_pi1';		// Same as class name
-	var $scriptRelPath = 'pi1/class.tx_nkwsubmenu_pi1.php';	// Path to this script relative to the extension dir.
-	var $extKey        = 'nkwsubmenu';	// The extension key.
+	var $prefixId      = 'tx_nkwsubmenu_pi1';
+	var $scriptRelPath = 'pi1/class.tx_nkwsubmenu_pi1.php';
+	var $extKey        = 'nkwsubmenu';
 	var $pi_checkCHash = true;
-
-
-
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -47,230 +41,209 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 	 * @param	array		$conf: The PlugIn configuration
 	 * @return	The content that is displayed on the website
 	 */
-	function main($content,$conf)	{
+	function main($content,$conf) {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-
 		// basics
 		$weAreHerePageID = $GLOBALS['TSFE']->id; // page ID
 		$saveATagParams = $GLOBALS['TSFE']->ATagParams; // T3 hack
 		$lang = $this->getLanguage();
 		$knot = $this->knotID($weAreHerePageID);
 		$pageInfo = $this->pageInfo($weAreHerePageID, $lang);
-
 		// FIRST LEVEL
-
 		// query
 		// get all pages that are menu items (tx_nkwsubmenu_in_menu = '1') or those who are not, but contain a knot (tx_nkwsubmenu_in_menu = '3')
-		if ($knot)
-		{
+		if ($knot) {
 			$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				"*",
-				"pages",
-				"uid = '".$knot."' AND hidden != '1' AND deleted = '0'",
-				"",
-				"sorting ASC",
-				""); #2009-12-01
-		}
-		else
-		{
+				'*',
+				'pages',
+				'uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($knot) 
+					. ' AND hidden != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
+					. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0),
+				'',
+				'sorting ASC',
+				'');
+		} else {
 			$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				#"*","pages","tx_nkwsubmenu_in_menu = '1' AND hidden != '1' AND deleted = '0'","","sorting ASC","");
-				"*",
-				"pages",
-				"(tx_nkwsubmenu_in_menu = '1' OR tx_nkwsubmenu_in_menu = '3') AND hidden != '1' AND deleted = '0'",
-				"",
-				"sorting ASC",
-				""); #2009-12-01
+				'*',
+				'pages',
+				'(tx_nkwsubmenu_in_menu = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(1) 
+					. ' OR tx_nkwsubmenu_in_menu = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(3) 
+					. ') AND hidden != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(1) 
+					. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0),
+				'',
+				'sorting ASC',
+				'');
 		}
-
-		$i1 = 0; // helper
-
+		// helper
+		$i1 = 0;
 		// cycle
-		while($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1))
-		{
-
-			$pages[$i1]["uid"] = $row1["uid"];
-			$pages[$i1]["pid"] = $row1["pid"];
-			$pages[$i1]["title"] = $this->formatString($row1["title"]);
-			$pages[$i1]["tx_nkwsubmenu_in_menu"] = $row1["tx_nkwsubmenu_in_menu"]; #2009-12-01
-			$pages[$i1]["tx_nkwsubmenu_picture"] = $row1["tx_nkwsubmenu_picture"];
-			$pages[$i1]["tx_nkwsubmenu_knotheader"] = $row1["tx_nkwsubmenu_knotheader"];
-			$pages[$i1]["tx_nkwsubmenu_picture_follow"] = $row1["tx_nkwsubmenu_picture_follow"];
-			$pages[$i1]["tx_nkwsubmenu_usecontent"] = $row1["tx_nkwsubmenu_usecontent"];
-
+		while($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1)) {
+			$pages[$i1]['uid'] = $row1['uid'];
+			$pages[$i1]['pid'] = $row1['pid'];
+			$pages[$i1]['title'] = $this->formatString($row1['title']);
+			$pages[$i1]['tx_nkwsubmenu_in_menu'] = $row1['tx_nkwsubmenu_in_menu'];
+			$pages[$i1]['tx_nkwsubmenu_picture'] = $row1['tx_nkwsubmenu_picture'];
+			$pages[$i1]['tx_nkwsubmenu_knotheader'] = $row1['tx_nkwsubmenu_knotheader'];
+			$pages[$i1]['tx_nkwsubmenu_picture_follow'] = $row1['tx_nkwsubmenu_picture_follow'];
+			$pages[$i1]['tx_nkwsubmenu_usecontent'] = $row1['tx_nkwsubmenu_usecontent'];
 			// check if knot
-			if ($row1["tx_nkwsubmenu_knot"])
-				$pages[$i1]["isKnot"] = 1;
-
+			if ($row1['tx_nkwsubmenu_knot']) {
+				$pages[$i1]['isKnot'] = 1;
+			}
 			// check if selected
-			if ($row1["uid"] == $weAreHerePageID)
-				$pages[$i1]["selected"] = 1;
-			
-			if ($pages[$i1]["tx_nkwsubmenu_usecontent"])
-			{
+			if ($row1['uid'] == $weAreHerePageID) {
+				$pages[$i1]['selected'] = 1;
+			}
+			if ($pages[$i1]['tx_nkwsubmenu_usecontent']) {
 				// query
 				$resContent = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					"*","tt_content","pid = '".$row1["uid"]."' AND hidden = '0' AND deleted = '0' AND sys_language_uid = '".$lang."'","","sorting ASC","");
-				
+					'*', 
+					'tt_content', 
+					'pid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row1['uid']) 
+						. ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
+						. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
+						. ' AND sys_language_uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($lang), 
+					'', 
+					'sorting ASC',
+					'');
 				$i = 0;
-				while($rowContent = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resContent))
-				{
-					$arrContent[$i]["header"] = $rowContent["header"];
-					$arrContent[$i]["uid"] = $rowContent["uid"];
+				while($rowContent = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resContent)) {
+					$arrContent[$i]['header'] = $rowContent['header'];
+					$arrContent[$i]['uid'] = $rowContent['uid'];
 					$i++;
 				}
-				$pages[$i1]["content"] = $arrContent;
+				$pages[$i1]['content'] = $arrContent;
 			}
-
 			// SECOND LEVEL
-
 			// query
 			$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				"*","pages","pid = '".$row1["uid"]."' AND tx_nkwsubmenu_in_menu != '2' AND hidden = '0' AND deleted = '0'","","sorting ASC","");
-
-			$i2 = 0; // helper
-
+				'*', 
+				'pages', 
+				'pid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row1['uid']) 
+					. ' AND tx_nkwsubmenu_in_menu != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(2) 
+					. ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
+					. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0), 
+				'', 
+				'sorting ASC', 
+				'');
+			// helper
+			$i2 = 0;
 			// cycle
-			while($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2))
-			{
-
-				$pages[$i1]["child"][$i2]["uid"] = $row2["uid"];
-				$pages[$i1]["child"][$i2]["title"] = $this->formatString($row2["title"]);
-				$pages[$i1]["child"][$i2]["tx_nkwsubmenu_picture"] = $row2["tx_nkwsubmenu_picture"];
-				$pages[$i1]["child"][$i2]["tx_nkwsubmenu_knotheader"] = $row2["tx_nkwsubmenu_knotheader"];
-				$pages[$i1]["child"][$i2]["tx_nkwsubmenu_picture_follow"] = $row2["tx_nkwsubmenu_picture_follow"];
-				$pages[$i1]["child"][$i2]["tx_nkwsubmenu_picture_nofollow"] = $row2["tx_nkwsubmenu_picture_nofollow"];
+			while($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2)) {
+				$pages[$i1]['child'][$i2]['uid'] = $row2['uid'];
+				$pages[$i1]['child'][$i2]['title'] = $this->formatString($row2['title']);
+				$pages[$i1]['child'][$i2]['tx_nkwsubmenu_picture'] = $row2['tx_nkwsubmenu_picture'];
+				$pages[$i1]["child"][$i2]["tx_nkwsubmenu_knotheader"] = $row2['tx_nkwsubmenu_knotheader'];
+				$pages[$i1]["child"][$i2]['tx_nkwsubmenu_picture_follow'] = $row2['tx_nkwsubmenu_picture_follow'];
+				$pages[$i1]["child"][$i2]['tx_nkwsubmenu_picture_nofollow'] = $row2['tx_nkwsubmenu_picture_nofollow'];
 				$pages[$i1]["hasChild"] = 1;
-
 				// pictures
-				if (
-					!$row2["tx_nkwsubmenu_picture"] && 
-					!$row2["tx_nkwsubmenu_picture_nofollow"] && 
-					$row1["tx_nkwsubmenu_picture"] && 
-					$row1["tx_nkwsubmenu_picture_follow"]
-				)
-				{
-					$pages[$i1]["child"][$i2]["tx_nkwsubmenu_picture"] = $row1["tx_nkwsubmenu_picture"];
-					$pages[$i1]["child"][$i2]["tx_nkwsubmenu_picture_follow"] = 1;
+				if (!$row2['tx_nkwsubmenu_picture'] 
+					&& !$row2['tx_nkwsubmenu_picture_nofollow'] 
+					&& $row1['tx_nkwsubmenu_picture'] 
+					&& $row1['tx_nkwsubmenu_picture_follow']) {
+					$pages[$i1]['child'][$i2]['tx_nkwsubmenu_picture'] = $row1['tx_nkwsubmenu_picture'];
+					$pages[$i1]['child'][$i2]['tx_nkwsubmenu_picture_follow'] = 1;
 				}
-
 				// knot
-				if ($row2["tx_nkwsubmenu_knot"])
-				{
-					$pages[$i1]["child"][$i2]["isKnot"] = 1;
-					$pages[$i1]["hasKnot"] = 1;
+				if ($row2['tx_nkwsubmenu_knot']) {
+					$pages[$i1]['child'][$i2]['isKnot'] = 1;
+					$pages[$i1]['hasKnot'] = 1;
 				}
-
 				// selected
-				if ($row2["uid"] == $weAreHerePageID)
-				{
-					$pages[$i1]["selected"] = 2;
-					$pages[$i1]["child"][$i2]["selected"] = 1;
+				if ($row2['uid'] == $weAreHerePageID) {
+					$pages[$i1]['selected'] = 2;
+					$pages[$i1]['child'][$i2]['selected'] = 1;
 				}
-
 				// check if second level item is within knot
-				if ($row1["tx_nkwsubmenu_knot"])
-					$pages[$i1]["child"][$i2]["inKnot"] = 1;
-				if ($row2["uid"] == $weAreHerePageID)
-					$pages[$i1]["hasActiveKnot"] = 1;
-
+				if ($row1['tx_nkwsubmenu_knot']) {
+					$pages[$i1]['child'][$i2]['inKnot'] = 1;
+				}
+				if ($row2['uid'] == $weAreHerePageID) {
+					$pages[$i1]['hasActiveKnot'] = 1;
+				}
 				// THIRD LEVEL
-				
 				// query
 				$res3 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					"*","pages","pid = '".$row2["uid"]."' AND tx_nkwsubmenu_in_menu != '2' AND hidden = '0' AND deleted = '0'","","sorting ASC","");
-
-				$i3 = 0; // helper
-
+					'*', 
+					'pages', 
+					'pid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row2["uid"]) 
+						. ' AND tx_nkwsubmenu_in_menu != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(2)
+						. ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
+						. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0), 
+					'', 
+					'sorting ASC', 
+					'');
+				// helper
+				$i3 = 0;
 				// cycle
-				while($row3 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res3))
-				{
-
-					$pages[$i1]["child"][$i2]["child"][$i3]["uid"] = $row3["uid"];
-					$pages[$i1]["child"][$i2]["child"][$i3]["title"] = $this->formatString($row3["title"]);
-					$pages[$i1]["child"][$i2]["child"][$i3]["tx_nkwsubmenu_picture"] = $row3["tx_nkwsubmenu_picture"];
-					$pages[$i1]["child"][$i2]["child"][$i3]["tx_nkwsubmenu_knotheader"] = $row3["tx_nkwsubmenu_knotheader"];
-					$pages[$i1]["child"][$i2]["child"][$i3]["tx_nkwsubmenu_picture_follow"] = $row3["tx_nkwsubmenu_picture_follow"];
-					$pages[$i1]["child"][$i2]["child"][$i3]["tx_nkwsubmenu_picture_nofollow"] = $row3["tx_nkwsubmenu_picture_nofollow"];
-					$pages[$i1]["child"][$i2]["hasChild"] = 1;
-
+				while($row3 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res3)) {
+					$pages[$i1]['child'][$i2]['child'][$i3]['uid'] = $row3['uid'];
+					$pages[$i1]['child'][$i2]['child'][$i3]['title'] = $this->formatString($row3['title']);
+					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture'] = $row3['tx_nkwsubmenu_picture'];
+					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_knotheader'] = $row3['tx_nkwsubmenu_knotheader'];
+					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture_follow'] = $row3['tx_nkwsubmenu_picture_follow'];
+					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture_nofollow'] = $row3['tx_nkwsubmenu_picture_nofollow'];
+					$pages[$i1]['child'][$i2]['hasChild'] = 1;
 					// pictures
-					if (
-						!$row3["tx_nkwsubmenu_picture"] && 
-						!$row3["tx_nkwsubmenu_picture_nofollow"] && 
-						$pages[$i1]["child"][$i2]["tx_nkwsubmenu_picture"] && 
-						$pages[$i1]["child"][$i2]["tx_nkwsubmenu_picture_follow"]
-					)
-					{
-						$pages[$i1]["child"][$i2]["child"][$i3]["tx_nkwsubmenu_picture"] = $pages[$i1]["child"][$i2]["tx_nkwsubmenu_picture"];
-						$pages[$i1]["child"][$i2]["child"][$i3]["tx_nkwsubmenu_picture_follow"] = 1;
+					if (!$row3['tx_nkwsubmenu_picture'] 
+						&& !$row3['tx_nkwsubmenu_picture_nofollow'] 
+						&& $pages[$i1]['child'][$i2]['tx_nkwsubmenu_picture'] 
+						&& $pages[$i1]['child'][$i2]['tx_nkwsubmenu_picture_follow']) {
+						$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture'] = $pages[$i1]['child'][$i2]['tx_nkwsubmenu_picture'];
+						$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture_follow'] = 1;
 					}
-
 					// knot
-					if ($row3["tx_nkwsubmenu_knot"])
-					{
-						$pages[$i1]["child"][$i2]["child"][$i3]["isKnot"] = 1;
-						$pages[$i1]["child"][$i2]["hasKnot"] = 1;
-						$pages[$i1]["hasKnot"] = 1;
+					if ($row3['tx_nkwsubmenu_knot']) {
+						$pages[$i1]['child'][$i2]['child'][$i3]['isKnot'] = 1;
+						$pages[$i1]['child'][$i2]['hasKnot'] = 1;
+						$pages[$i1]['hasKnot'] = 1;
 					}
-					if ($row3["uid"] == $weAreHerePageID)
-					{
-						$pages[$i1]["child"][$i2]["hasActiveKnot"] = 1;
-						$pages[$i1]["hasActiveKnot"] = 1;
+					if ($row3['uid'] == $weAreHerePageID) {
+						$pages[$i1]['child'][$i2]['hasActiveKnot'] = 1;
+						$pages[$i1]['hasActiveKnot'] = 1;
 					}
-
 					// selected
-					if ($row3["uid"] == $weAreHerePageID)
-					{
-						$pages[$i1]["selected"] = 3;
-						$pages[$i1]["child"][$i2]["selected"] = 2;
-						$pages[$i1]["child"][$i2]["child"][$i3]["selected"] = 1;
+					if ($row3['uid'] == $weAreHerePageID) {
+						$pages[$i1]['selected'] = 3;
+						$pages[$i1]['child'][$i2]['selected'] = 2;
+						$pages[$i1]['child'][$i2]['child'][$i3]['selected'] = 1;
 					}
-
 					// check if third level item is within knot
-					if ($pages[$i1]["child"][$i2]["isKnot"] || $pages[$i1]["child"][$i2]["inKnot"])
-						$pages[$i1]["child"][$i2]["child"][$i3]["inKnot"] = 1;
-
-					$i3++; // helper
-
+					if ($pages[$i1]['child'][$i2]['isKnot'] || $pages[$i1]['child'][$i2]['inKnot']) {
+						$pages[$i1]['child'][$i2]['child'][$i3]['inKnot'] = 1;
+					}
+					// helper
+					$i3++;
 				}
-
-				$i2++; // helper
-
+				// helper
+				$i2++;
 			}
-
-			$i1++; // helper
-
+			// helper
+			$i1++;
 		}
-
-		$pagesSize = $i1; // helper
-
-
-
+		// helper
+		$pagesSize = $i1;
 		// set banner picture
-		for($i=0;$i<$pagesSize;$i++)
-		{
+		for ($i = 0;$i < $pagesSize; $i++) {
 			// FIRST
-			if ($pages[$i]["selected"] == 1)
-				$GLOBALS["TSFE"]->page["tx_nkwsubmenu_picture"] = $pages[$i]["tx_nkwsubmenu_picture"]; // set picture
-			elseif ($pages[$i]["selected"] >= 2)
-			{
-				if ($pages[$i]["hasChild"])
-				{
+			if ($pages[$i]['selected'] == 1){
+				$GLOBALS['TSFE']->page['tx_nkwsubmenu_picture'] = $pages[$i]['tx_nkwsubmenu_picture'];
+			} elseif ($pages[$i]['selected'] >= 2) { // set picture
+				if ($pages[$i]['hasChild']) {
 					// SECOND
-					for($ii=0;$ii<sizeof($pages[$i]["child"]);$ii++)
-					{
-						if ($pages[$i]["child"][$ii]["selected"] == 1)
-							$GLOBALS["TSFE"]->page["tx_nkwsubmenu_picture"] = $pages[$i]["child"][$ii]["tx_nkwsubmenu_picture"]; // set picture
-						elseif($pages[$i]["child"][$ii]["selected"] == 2)
-						{
+					for ($ii = 0;$ii < sizeof($pages[$i]['child']); $ii++) {
+						if ($pages[$i]['child'][$ii]['selected'] == 1) {
+							$GLOBALS["TSFE"]->page['tx_nkwsubmenu_picture'] = $pages[$i]['child'][$ii]['tx_nkwsubmenu_picture']; // set picture
+						} elseif($pages[$i]['child'][$ii]['selected'] == 2) {
 							// THIRD
-							for($iii=0;$iii<sizeof($pages[$i]["child"][$ii]["child"]);$iii++)
-							{
-								if($pages[$i]["child"][$ii]["child"][$iii]["selected"] == 1)
-									$GLOBALS["TSFE"]->page["tx_nkwsubmenu_picture"] = $pages[$i]["child"][$ii]["child"][$iii]["tx_nkwsubmenu_picture"]; // set picture
+							for ($iii = 0;$iii < sizeof($pages[$i]['child'][$ii]['child']); $iii++) {
+								if($pages[$i]['child'][$ii]['child'][$iii]['selected'] == 1) {
+									$GLOBALS['TSFE']->page['tx_nkwsubmenu_picture'] = $pages[$i]['child'][$ii]['child'][$iii]['tx_nkwsubmenu_picture']; // set picture
+								}
 							}
 						}
 					}
@@ -278,41 +251,33 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			}
 		}
 		// set banner picture
-
-
-
-		if ($knot) // if $knot
-		{
+		// if $knot
+		if ($knot) {
 			#$this->dprint("1. ".$pagesSize."-".sizeof($pages));
 			// remove everything from first level that has no active knot
-			for ($i=0;$i<$pagesSize;$i++)
-			{
-				if ($pages[$i]["isKnot"] || $pages[$i]["hasActiveKnot"])
-				{
+			for ($i = 0;$i < $pagesSize; $i++) {
+				if ($pages[$i]['isKnot'] || $pages[$i]['hasActiveKnot']) {
 					$tmp = $pages[$i]; // tmp save array index with active knot
 					unset($pages); // reset pages array
 					$pages[0] = $tmp; // set pages array with active knot index only
 				}
 			}
-
 			#$this->dprint("2. ".$pagesSize."-".sizeof($pages));
 			#$this->dprint($pages);
 			#$pagesSize = sizeof($pages);
 			// remove everything from second level that has no active knot
-			#for ($i=0;$i<sizeof($pages);$i++)
+			#for ($i = 0;$i < sizeof($pages); $i++)
 			#{
-				#for ($ii=0;$ii<sizeof($pages[$i]);$ii++)
-				for ($ii=0;$ii<sizeof($pages[0]["child"]);$ii++)
-				{
-					if ($pages[0]["child"][$ii]["isKnot"] && $pages[0]["child"][$ii]["selected"])
-					{
-						$tmp = $pages[0]["child"][$ii]; // tmp save array index with active knot
-						unset($pages[0]["child"]); // reset pages array
-						$pages[0] = $tmp; // set pages array with active knot index only
-					}
+				#for ($ii = 0; $ii < sizeof($pages[$i]); $ii++)
+			for ($ii = 0; $ii < sizeof($pages[0]['child']); $ii++) {
+				if ($pages[0]['child'][$ii]['isKnot'] && $pages[0]['child'][$ii]['selected']) {
+					$tmp = $pages[0]['child'][$ii]; // tmp save array index with active knot
+					unset($pages[0]['child']); // reset pages array
+					$pages[0] = $tmp; // set pages array with active knot index only
 				}
+			}
 /*
-				for ($ii=0;$ii<sizeof($pages[0]["child"]);$ii++)
+				for ($ii = 0; $ii < sizeof($pages[0]["child"]); $ii++)
 				{
 					if ($pages[0]["child"][$ii]["isKnot"] || $pages[0]["child"][$ii]["hasActiveKnot"])
 					{
@@ -323,209 +288,171 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 				}
 */
 			#}
-
 			// remove everything from third level that has no active knot
-			for ($i=0;$i<sizeof($pages[0]["child"]);$i++)
-			{
-				if ($pages[0]["child"][$i]["isKnot"])
-				{
-					$tmp = $pages[0]["child"][$i]; // tmp save array index with active knot
-					unset($pages[0]["child"]); // reset pages array
+			for ($i = 0;$i < sizeof($pages[0]['child']); $i++) {
+				if ($pages[0]['child'][$i]['isKnot']) {
+					$tmp = $pages[0]['child'][$i]; // tmp save array index with active knot
+					unset($pages[0]['child']); // reset pages array
 					$pages[0] = $tmp; // set pages array with active knot index only
 				}
 			}
-
 		}
-
 		// remove pages who contain knots (not active), but don't show up in the menu
-		if (!$knot)
-		{
-			for ($i=0;$i<$pagesSize;$i++)
-				if ($pages[$i]["tx_nkwsubmenu_in_menu"] == 1)
+		if (!$knot) {
+			for ($i = 0; $i < $pagesSize; $i++)
+				if ($pages[$i]['tx_nkwsubmenu_in_menu'] == 1) {
 					$tmp[] = $pages[$i];
+				}
 			$pages = $tmp;
 		}
-
 		$pagesSize = sizeof($pages);
-
 		// FIRST
-		for ($i1=0;$i1<$pagesSize;$i1++)
-		{
-			
+		for ($i1 = 0; $i1 < $pagesSize; $i1++) {
 			#$menuContent .= "<li class='tx-nkwsubmenu-pi1-l1'>";
-
-			if ($pages[$i1]["selected"] == 1)
-			{
-				$menuContent .= "<li class='tx-nkwsubmenu-pi1-selected'>";
-			}
-			else
+			if ($pages[$i1]['selected'] == 1) {
+				$menuContent .= '<li class="tx-nkwsubmenu-pi1-selected">';
+			} else {
 				$menuContent .= "\t\t<li>";
-
+			}
 			// format link
-			if ($pages[$i1]["selected"] == 1)
-			{
-				if ($pages[$i1]["hasChild"] && !$pages[$i1]["isKnot"])
-					$menuContent .= "<a class='tx-nkwsubmenu-pi1-highlight tx-nkwsubmenu-pi1-trigger'>".$pages[$i1]["title"]."</a>";
-				else
-				{
+			if ($pages[$i1]['selected'] == 1) {
+				if ($pages[$i1]['hasChild'] && !$pages[$i1]['isKnot']) {
+					$menuContent .= '<a class="tx-nkwsubmenu-pi1-highlight tx-nkwsubmenu-pi1-trigger">' 
+						. $pages[$i1]['title'] . '</a>';
+				} else {
 					$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-highlight tx-nkwsubmenu-pi1-trigger"'; // T3 hack
-					$menuContent .= $this->pi_LinkToPage($pages[$i1]["title"],$pages[$i1]["uid"],"","")."</span>";
+					$menuContent .= $this->pi_LinkToPage($pages[$i1]['title'], $pages[$i1]['uid'], '', '') . '</span>';
 					$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
 				}
 				// set banner picture
-				#$GLOBALS["TSFE"]->page["tx_nkwsubmenu_picture"] = $pages[$i1]["tx_nkwsubmenu_picture"];
-
-			}
-			else if ($pages[$i1]["selected"] == 2 || $pages[$i1]["selected"] == 3)
-			{
-				if ($pages[$i1]["hasChild"]  && !$pages[$i1]["isKnot"])
-					$menuContent .= "<a class='tx-nkwsubmenu-pi1-highlight-parent tx-nkwsubmenu-pi1-trigger'>".$pages[$i1]["title"]."</a>";
-				else
-				{
+				#$GLOBALS['TSFE']->page['tx_nkwsubmenu_picture'] = $pages[$i1]['tx_nkwsubmenu_picture'];
+			} else if ($pages[$i1]['selected'] == 2 || $pages[$i1]['selected'] == 3) {
+				if ($pages[$i1]['hasChild']  && !$pages[$i1]['isKnot']) {
+					$menuContent .= '<a class="tx-nkwsubmenu-pi1-highlight-parent tx-nkwsubmenu-pi1-trigger">' 
+						. $pages[$i1]['title'] . '</a>';
+				} else {
 					$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-highlight-parent tx-nkwsubmenu-pi1-trigger"'; // T3 hack
-					$menuContent .= $this->pi_LinkToPage($pages[$i1]["title"],$pages[$i1]["uid"],"","");
+					$menuContent .= $this->pi_LinkToPage($pages[$i1]['title'], $pages[$i1]['uid'], '', '');
 					$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack				
 				}
-
-			}
-			else
-			{
-				if ($pages[$i1]["hasChild"])
-					$menuContent .= "<a class='tx-nkwsubmenu-pi1-trigger'>".$pages[$i1]["title"]."</a>";
-				else
-				{
+			} else {
+				if ($pages[$i1]['hasChild']) {
+					$menuContent .= '<a class="tx-nkwsubmenu-pi1-trigger">' . $pages[$i1]['title'] . '</a>';
+				} else {
 					$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-trigger"'; // T3 hack
-					$menuContent .= $this->pi_LinkToPage($pages[$i1]["title"],$pages[$i1]["uid"],"","");
+					$menuContent .= $this->pi_LinkToPage($pages[$i1]['title'], $pages[$i1]['uid'], '', '');
 					$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
 				}
 			}
-
-			if ($pages[$i1]["tx_nkwsubmenu_usecontent"])
-			{
-
+			if ($pages[$i1]['tx_nkwsubmenu_usecontent']) {
 				// open ul if selected
-				if ($pages[$i1]["selected"])
+				if ($pages[$i1]['selected']) {
 					$menuContent .= "\n\t<ul class='tx-nkwsubmenu-pi1-l2 js go'>\n";
-				else
+				} else {
 					$menuContent .= "\n\t<ul class='tx-nkwsubmenu-pi1-l2 js'>\n";
-
-				foreach ($pages[$i1]["content"] AS $key => $value)
-				{
+				}
+				foreach ($pages[$i1]['content'] AS $key => $value) {
 					$menuContent .= "\t\t<li>";
-					$menuContent .= $this->pi_LinkToPage($value["header"],$pages[$i1]["uid"]."#c".$value["uid"],"","");
+					$menuContent .= $this->pi_LinkToPage(
+						$value['header'], 
+						$pages[$i1]['uid'] . '#c' . $value['uid'], 
+						'', 
+						'');
 					$menuContent .= "\t\t</li>";
 				}
-
 				$menuContent .= "\n\t</ul>";
 			}
-			
 			// SECOND
-			if ($pages[$i1]["hasChild"] && (!$pages[$i1]["isKnot"] || $pages[$i1]["selected"]))
-			{
-
+			if ($pages[$i1]['hasChild'] && (!$pages[$i1]['isKnot'] || $pages[$i1]['selected'])) {
 				// open ul if selected
-				if ($pages[$i1]["selected"])
+				if ($pages[$i1]['selected']) {
 					$menuContent .= "\n\t<ul class='tx-nkwsubmenu-pi1-l2 js go'>\n";
-				else
+				} else {
 					$menuContent .= "\n\t<ul class='tx-nkwsubmenu-pi1-l2 js'>\n";
-				
+				}
 				// cycle children
-				for ($i2=0;$i2<sizeof($pages[$i1]["child"]);$i2++)
-				{
-
-					if ($pages[$i1]["child"][$i2]["selected"] == 1)
-					{
+				for ($i2 = 0; $i2 < sizeof($pages[$i1]['child']); $i2++) {
+					if ($pages[$i1]['child'][$i2]['selected'] == 1) {
 						$menuContent .= "\t\t<li class='tx-nkwsubmenu-pi1-selected'>";
 						// set banner picture
-						#$GLOBALS["TSFE"]->page["tx_nkwsubmenu_picture"] = $pages[$i1]["child"][$i2]["tx_nkwsubmenu_picture"];
-					}
-					else
+						#$GLOBALS['TSFE']->page['tx_nkwsubmenu_picture'] = $pages[$i1]['child'][$i2]['tx_nkwsubmenu_picture'];
+					} else {
 						$menuContent .= "\t\t<li>";
-
+					}
 					// format link
-					if ($pages[$i1]["child"][$i2]["selected"] == 1)
-					{
+					if ($pages[$i1]['child'][$i2]['selected'] == 1) {
 						$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-highlight"'; // T3 hack
-						$menuContent .= $this->pi_LinkToPage($pages[$i1]["child"][$i2]["title"],$pages[$i1]["child"][$i2]["uid"],"","");
+						$menuContent .= $this->pi_LinkToPage(
+							$pages[$i1]['child'][$i2]['title'], 
+							$pages[$i1]['child'][$i2]['uid'], 
+							'', 
+							'');
 						$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
-					}
-					else if ($pages[$i1]["child"][$i2]["selected"] == 2)
-					{
+					} else if ($pages[$i1]['child'][$i2]['selected'] == 2) {
 						#$GLOBALS['TSFE']->ATagParams = 'class="menu_highlight_top"'; // T3 hack
-						$menuContent .= $this->pi_LinkToPage($pages[$i1]["child"][$i2]["title"],$pages[$i1]["child"][$i2]["uid"],"","");
+						$menuContent .= $this->pi_LinkToPage(
+							$pages[$i1]['child'][$i2]['title'], 
+							$pages[$i1]['child'][$i2]['uid'], 
+							'', 
+							'');
 						#$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
+					} else {
+						$menuContent .= $this->pi_LinkToPage(
+							$pages[$i1]['child'][$i2]['title'], 
+							$pages[$i1]['child'][$i2]['uid'], 
+							'', 
+							'');
 					}
-					else
-						$menuContent .= $this->pi_LinkToPage($pages[$i1]["child"][$i2]["title"],$pages[$i1]["child"][$i2]["uid"],"","");
-
 					// THIRD
-					if ($pages[$i1]["child"][$i2]["hasChild"] && (!$pages[$i1]["child"][$i2]["isKnot"] || $pages[$i1]["child"][$i2]["selected"]))
-					{
-
+					if ($pages[$i1]['child'][$i2]['hasChild'] 
+						&& (!$pages[$i1]['child'][$i2]['isKnot'] || $pages[$i1]['child'][$i2]['selected'])) {
 						$menuContent .= "\n\t\t\t<ul class='tx-nkwsubmenu-pi1-l3'>\n";
-
 						// cycle children
-						for ($i3=0;$i3<sizeof($pages[$i1]["child"][$i2]["child"]);$i3++)
-						{
-
+						for ($i3 = 0; $i3 < sizeof($pages[$i1]['child'][$i2]['child']); $i3++) {
 							// format link
-							if ($pages[$i1]["child"][$i2]["child"][$i3]["selected"] == 1)
-							{
+							if ($pages[$i1]['child'][$i2]['child'][$i3]['selected'] == 1) {
 								$menuContent .= "\t\t\t\t<li class='tx-nkwsubmenu-pi1-selected'>";
 								$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-highlight"'; // T3 hack
-								$menuContent .= $this->pi_LinkToPage($pages[$i1]["child"][$i2]["child"][$i3]["title"],$pages[$i1]["child"][$i2]["child"][$i3]["uid"],"","");
+								$menuContent .= $this->pi_LinkToPage(
+									$pages[$i1]['child'][$i2]['child'][$i3]['title'], 
+									$pages[$i1]['child'][$i2]['child'][$i3]['uid'], 
+									'', 
+									'');
 								$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
-
 								// set banner picture
-								#$GLOBALS["TSFE"]->page["tx_nkwsubmenu_picture"] = $pages[$i1]["child"][$i2]["child"][$i3]["tx_nkwsubmenu_picture"];								
-								
-							}
-							else
-							{
+								#$GLOBALS['TSFE']->page['tx_nkwsubmenu_picture'] = $pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture'];								
+							} else {
 								$menuContent .= "\t\t\t\t<li>";
-								$menuContent .= $this->pi_LinkToPage($pages[$i1]["child"][$i2]["child"][$i3]["title"],$pages[$i1]["child"][$i2]["child"][$i3]["uid"],"","");
+								$menuContent .= $this->pi_LinkToPage(
+									$pages[$i1]['child'][$i2]['child'][$i3]['title'], 
+									$pages[$i1]['child'][$i2]['child'][$i3]['uid'], 
+									'', 
+									'');
 							}
-
 							$menuContent .= "</li>\n";
-
 						}
-
 						$menuContent .= "\t\t\t</ul>\n\t\t";
-
 					}
-
 					$menuContent .= "</li>\n";
-
 				}
-
 				$menuContent .= "\t</ul>\n";
-
 			}
-
 			$menuContent .= "</li>\n";
-
 		}
-
 		// wrap everything and go
-		$content = "<ul id='menu1' class='tx-nkwsubmenu-pi1-l1 expand'>".$menuContent.$content_tmp."</ul>";
-
+		$content = '<ul id="menu1" class="tx-nkwsubmenu-pi1-l1 expand">' . $menuContent.$content_tmp . '</ul>';
 		// show a back to startpage link if in knot
-		if ($knot)
-		{
-			$pageInfo = $this->pageInfo(1,$lang);
+		if ($knot) {
+			$pageInfo = $this->pageInfo(1, $lang);
 			$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-trigger"'; // T3 hack
-			$content = "<ul><li>".$this->pi_LinkToPage($pageInfo["title"],1,"","")."</li></ul>".$content;
+			$content = '<ul><li>' . $this->pi_LinkToPage($pageInfo['title'], 1, '', '') . '</li></ul>' . $content;
 			$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
 		}
-
 		// return
 		return $this->pi_wrapInBaseClass($content);
 	}
 }
-
-
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi1/class.tx_nkwsubmenu_pi1.php'])
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi1/class.tx_nkwsubmenu_pi1.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi1/class.tx_nkwsubmenu_pi1.php']);
-
+}
 ?>

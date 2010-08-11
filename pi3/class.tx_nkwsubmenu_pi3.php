@@ -21,10 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
-require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
-
+require_once(t3lib_extMgm::extPath('nkwlib') . 'class.tx_nkwlib.php');
 /**
  * Plugin 'Keyword List' for the 'nkwsubmenu' extension.
  *
@@ -33,11 +30,10 @@ require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
  * @subpackage	tx_nkwsubmenu
  */
 class tx_nkwsubmenu_pi3 extends tx_nkwlib {
-	var $prefixId      = 'tx_nkwsubmenu_pi3';		// Same as class name
-	var $scriptRelPath = 'pi3/class.tx_nkwsubmenu_pi3.php';	// Path to this script relative to the extension dir.
-	var $extKey        = 'nkwsubmenu';	// The extension key.
+	var $prefixId      = 'tx_nkwsubmenu_pi3';
+	var $scriptRelPath = 'pi3/class.tx_nkwsubmenu_pi3.php';
+	var $extKey        = 'nkwsubmenu';
 	var $pi_checkCHash = true;
-	
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -49,96 +45,110 @@ class tx_nkwsubmenu_pi3 extends tx_nkwlib {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-
-
 		// basics
 		$weAreHerePageID = $GLOBALS['TSFE']->id; // page ID
 		$saveATagParams = $GLOBALS['TSFE']->ATagParams; // T3 hack
 		$lang = $this->getLanguage();
-		$queryAdd = " AND hidden = '0' AND deleted = '0'";
-		$getKeyword = addslashes(htmlspecialchars(trim($this->piVars["keyword"])));
-
-
-		if ($getKeyword)
-		{
-			$content = "<h2>".$this->pi_getLL("selectedKeyword").": ".$getKeyword."</h2>";
-			$queryWhat = "title, uid, keywords";
-			$queryWhere = "(FIND_IN_SET(' ".$getKeyword."',keywords) OR FIND_IN_SET('".$getKeyword."',keywords)) ";
-			$querySort = "title ASC";
-			if ($lang > 0)
-				$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($queryWhat,"pages_language_overlay",$queryWhere." AND sys_language_uid = '".$lang."'".$queryAdd,"",$querySort,"");
-			else
-				$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($queryWhat,"pages",$queryWhere.$queryAdd,"",$querySort,"");
-			while($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1))
-				$tmp .= "<li>".$this->pi_LinkToPage($row1["title"],$row1["uid"],"","")."</li>";
-			if ($tmp)
-				$content .= "<p class='hint'>(".$this->pi_getLL("hint").")</p><ul>".$tmp."</ul>";
-			else
-				$content .= "<p>".$this->pi_getLL("noHits").$getKeyword."</p>";
-		}
-		else
-		{
+		$queryAdd = ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
+			. ' AND deleted = ' $GLOBALS['TYPO3_DB']->fullQuoteStr(0);
+		$getKeyword = addslashes(htmlspecialchars(trim($this->piVars['keyword'])));
+		if ($getKeyword) {
+			$content = '<h2>' . $this->pi_getLL('selectedKeyword') . ': ' . $getKeyword . '</h2>';
+			$queryWhat = 'title, uid, keywords';
+			$queryWhere = "(FIND_IN_SET(' " . $getKeyword . "', keywords) OR FIND_IN_SET('" . $getKeyword . "', keywords)) ";
+			$querySort = 'title ASC';
+			if ($lang > 0) {
+				$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					$queryWhat, 
+					'pages_language_overlay', 
+					$queryWhere . " AND sys_language_uid = '" . $lang . "'" . $queryAdd, 
+					'', 
+					$querySort, 
+					'');
+			} else {
+				$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					$queryWhat, 
+					'pages', 
+					$queryWhere.$queryAdd, 
+					'', 
+					$querySort, 
+					'');
+			}
+			while($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1)) {
+				$tmp .= '<li>' . $this->pi_LinkToPage($row1['title'], $row1['uid'], '', '') . '</li>';
+			}
+			if ($tmp) {
+				$content .= '<p class="hint">(' . $this->pi_getLL('hint') . ')</p><ul>' . $tmp . '</ul>';
+			} else {
+				$content .= '<p>' . $this->pi_getLL('noHits') . $getKeyword . '</p>';
+			}
+		} else {
 			// get all keywords
-			if ($lang > 0)
-				$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","pages_language_overlay","keywords != '' AND sys_language_uid = '".$lang."'".$queryAdd,"","","");
-			else
-				$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","pages","keywords != ''".$queryAdd,"","","");
-			while($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1))
-				$keywords .= ", ".$row1["keywords"];
-	
-	
+			if ($lang > 0) {
+				$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*', 
+					'pages_language_overlay', 
+					"keywords != '' AND sys_language_uid = '" . $lang . "'" . $queryAdd, 
+					'', 
+					'', 
+					'');
+			} else {
+				$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					#, 
+					'pages', 
+					"keywords != ''" . $queryAdd, 
+					'', 
+					'', 
+					'');
+			}
+			while($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1)) {
+				$keywords .= ', ' . $row1['keywords'];
+			}
 			// make array, remove duplicates and sort alpha
-			$keywords = explode(", ", $keywords);
+			$keywords = explode(', ', $keywords);
 			$keywords = array_unique($keywords);
 			asort($keywords);
-	
-	
 			// arrange list
 			$tmpLetterArr = array();
-			foreach ($keywords AS $key => $value)
-			{
-				if ($value)
-				{
+			foreach ($keywords AS $key => $value) {
+				if ($value) {
 					$letter = strtoupper($value{0});
 					// den Buchstaben haben wir noch nicht
-					if (!in_array($letter,$tmpLetterArr))
-					{
+					if (!in_array($letter,$tmpLetterArr)) {
 						array_push($tmpLetterArr, $letter);
-						if (!$ulStart)
+						if (!$ulStart) {
 							$ulStart = TRUE;
-						else
-							$tmp .= "</ul></li>";
-						$tmp .= "<li class='liAsHeader'><a name='".$letter."'></a><strong>".$letter."</strong><ul>";
+						} else {
+							$tmp .= '</ul></li>';
+						}
+						$tmp .= '<li class="liAsHeader"><a name="' . $letter . '"></a><strong>' . $letter 
+							. '</strong><ul>';
 					}
-					$tmp .= "<li>".$this->pi_LinkToPage($value,$weAreHerePageID,"",array($this->prefixId."[keyword]" => $value))."</li>";
+					$tmp .= '<li>' . $this->pi_LinkToPage(
+						$value, 
+						$weAreHerePageID, 
+						'', 
+						array($this->prefixId . '[keyword]' => $value)) . '</li>';
 				}
 			}
 			$tmp = $tmp;
-	
-	
 			// alpha list
 			$keywordsAlphaList = $this->alphaListFromArray($keywords);
-			foreach($keywordsAlphaList AS $key => $value)
-				$tmpKeywordsAlphaList .= "<a href='#".$value."'>".$value."</a> | ";
+			foreach($keywordsAlphaList AS $key => $value) {
+				$tmpKeywordsAlphaList .= '<a href="#' . $value . '">' . $value . '</a> | ';
+			}
 			$tmpKeywordsAlphaList = substr($tmpKeywordsAlphaList, 0, -3);
-	
-	
 			// output
-			if ($tmp)
-				$content = "<ul class='resetUlMargin'>".$tmpKeywordsAlphaList."</ul>";
-				$content .= "<ul class='resetUlMargin'>".$tmp."</ul>";
+			if ($tmp) {
+				$content = '<ul class="resetUlMargin">' . $tmpKeywordsAlphaList . '</ul>';
+				$content .= '<ul class="resetUlMargin">' . $tmp . '</ul>';
+			}
 		}
-
 		// return
 		return $this->pi_wrapInBaseClass($content);
-
-
 	}
 }
-
-
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi2/class.tx_nkwsubmenu_pi2.php'])
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi2/class.tx_nkwsubmenu_pi2.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi2/class.tx_nkwsubmenu_pi2.php']);
-
+}
 ?>
