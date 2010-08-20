@@ -58,9 +58,9 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'pages',
-				'uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($knot) 
-					. ' AND hidden != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
-					. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0),
+				'uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($knot, 'pages') 
+					. ' AND hidden != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages') 
+					. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages'),
 				'',
 				'sorting ASC',
 				'');
@@ -69,10 +69,10 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 				#"*","pages","tx_nkwsubmenu_in_menu = '1' AND hidden != '1' AND deleted = '0'","","sorting ASC","");
 				'*',
 				'pages',
-				'(tx_nkwsubmenu_in_menu = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(1) 
-					. ' OR tx_nkwsubmenu_in_menu = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(3) 
-					. ') AND hidden != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(1) 
-					. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0),
+				'(tx_nkwsubmenu_in_menu = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(1, 'pages') 
+					. ' OR tx_nkwsubmenu_in_menu = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(3, 'pages') 
+					. ') AND hidden != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(1, 'pages') 
+					. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages'),
 				'',
 				'sorting ASC',
 				'');
@@ -102,10 +102,10 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 				$resContent = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*', 
 					'tt_content', 
-					'pid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row1['uid']) 
-						. ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
-						. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
-						. ' AND sys_language_uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($lang), 
+					'pid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row1['uid'], 'tt_content') 
+						. ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'tt_content') 
+						. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'tt_content') 
+						. ' AND sys_language_uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($lang, 'tt_content'), 
 					'', 
 					'sorting ASC',
 					'');
@@ -122,10 +122,10 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*', 
 				'pages', 
-				'pid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row1['uid']) 
-					. ' AND tx_nkwsubmenu_in_menu != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(2) 
-					. ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
-					. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0), 
+				'pid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row1['uid'], 'pages') 
+					. ' AND tx_nkwsubmenu_in_menu != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(2, 'pages') 
+					. ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages') 
+					. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages'), 
 				'', 
 				'sorting ASC', 
 				'');
@@ -170,10 +170,10 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 				$res3 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*', 
 					'pages', 
-					'pid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row2["uid"]) 
-						. ' AND tx_nkwsubmenu_in_menu != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(2)
-						. ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) 
-						. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0), 
+					'pid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row2['uid'], 'pages') 
+						. ' AND tx_nkwsubmenu_in_menu != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(2, 'pages')
+						. ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages') 
+						. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages'), 
 					'', 
 					'sorting ASC', 
 					'');
