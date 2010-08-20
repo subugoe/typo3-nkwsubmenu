@@ -190,7 +190,8 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 					$pages[$i1]['child'][$i2]['child'][$i3]['uid'] = $row3['uid'];
 					$pages[$i1]['child'][$i2]['child'][$i3]['title'] = $this->formatString($row3['title']);
 					if ($lang > 0) {
-						$pages[$i1]['child'][$i2]['child'][$i3]['title'] = $this->formatString($this->getPageTitle($row3['uid'], $lang));
+						$pages[$i1]['child'][$i2]['child'][$i3]['title'] = $this->formatString(
+							$this->getPageTitle($row3['uid'], $lang));
 					}
 					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture'] = $row3['tx_nkwsubmenu_picture'];
 					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_knotheader'] = $row3['tx_nkwsubmenu_knotheader'];
@@ -329,7 +330,8 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 					$menuContent .= '<a class="tx-nkwsubmenu-pi1-highlight tx-nkwsubmenu-pi1-trigger">' 
 						. $pages[$i1]['title'] . '</a>';
 				} else {
-					$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-highlight tx-nkwsubmenu-pi1-trigger"'; // T3 hack
+					$GLOBALS['TSFE']->ATagParams = 'title="' . $pages[$i1]['title'] 
+						. '" class="tx-nkwsubmenu-pi1-highlight tx-nkwsubmenu-pi1-trigger"'; // T3 hack
 					$menuContent .= $this->pi_LinkToPage($pages[$i1]['title'], $pages[$i1]['uid'], '', '') . '</span>';
 					$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
 				}
@@ -337,18 +339,22 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 				#$GLOBALS['TSFE']->page['tx_nkwsubmenu_picture'] = $pages[$i1]['tx_nkwsubmenu_picture'];
 			} else if ($pages[$i1]['selected'] == 2 || $pages[$i1]['selected'] == 3) {
 				if ($pages[$i1]['hasChild']  && !$pages[$i1]['isKnot']) {
-					$menuContent .= '<a class="tx-nkwsubmenu-pi1-highlight-parent tx-nkwsubmenu-pi1-trigger">' 
+					$menuContent .= '<a title="' . $pages[$i1]['title'] 
+						. '" class="tx-nkwsubmenu-pi1-highlight-parent tx-nkwsubmenu-pi1-trigger">' 
 						. $pages[$i1]['title'] . '</a>';
 				} else {
-					$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-highlight-parent tx-nkwsubmenu-pi1-trigger"'; // T3 hack
+					$GLOBALS['TSFE']->ATagParams = 'title="' . $pages[$i1]['title'] 
+						. '" class="tx-nkwsubmenu-pi1-highlight-parent tx-nkwsubmenu-pi1-trigger"'; // T3 hack
 					$menuContent .= $this->pi_LinkToPage($pages[$i1]['title'], $pages[$i1]['uid'], '', '');
-					$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack				
+					$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
 				}
 			} else {
 				if ($pages[$i1]['hasChild']) {
-					$menuContent .= '<a class="tx-nkwsubmenu-pi1-trigger">' . $pages[$i1]['title'] . '</a>';
+					$menuContent .= '<a title="' . $pages[$i1]['title'] . '" class="tx-nkwsubmenu-pi1-trigger">' 
+						. $pages[$i1]['title'] . '</a>';
 				} else {
-					$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-trigger"'; // T3 hack
+					$GLOBALS['TSFE']->ATagParams = 'title="' . $pages[$i1]['title'] 
+						. '" class="tx-nkwsubmenu-pi1-trigger"'; // T3 hack
 					$menuContent .= $this->pi_LinkToPage($pages[$i1]['title'], $pages[$i1]['uid'], '', '');
 					$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
 				}
@@ -362,11 +368,11 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 				}
 				foreach ($pages[$i1]['content'] AS $key => $value) {
 					$menuContent .= "\t\t<li>";
+					$saveATagParams = $GLOBALS['TSFE']->ATagParams;
+					$GLOBALS['TSFE']->ATagParams = 'title="' . $value['header'] . '"';
 					$menuContent .= $this->pi_LinkToPage(
-						$value['header'], 
-						$pages[$i1]['uid'] . '#c' . $value['uid'], 
-						'', 
-						'');
+						$value['header'], $pages[$i1]['uid'] . '#c' . $value['uid'], '', '');
+					$GLOBALS['TSFE']->ATagParams = $saveATagParams;
 					$menuContent .= "\t\t</li>";
 				}
 				$menuContent .= "\n\t</ul>";
@@ -390,7 +396,8 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 					}
 					// format link
 					if ($pages[$i1]['child'][$i2]['selected'] == 1) {
-						$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-highlight"'; // T3 hack
+						$GLOBALS['TSFE']->ATagParams = 'title="' . $pages[$i1]['child'][$i2]['title'] 
+							. '" class="tx-nkwsubmenu-pi1-highlight"'; // T3 hack
 						$menuContent .= $this->pi_LinkToPage(
 							$pages[$i1]['child'][$i2]['title'], 
 							$pages[$i1]['child'][$i2]['uid'], 
@@ -398,19 +405,23 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 							'');
 						$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
 					} else if ($pages[$i1]['child'][$i2]['selected'] == 2) {
-						#$GLOBALS['TSFE']->ATagParams = 'class="menu_highlight_top"'; // T3 hack
+						$saveATagParams = $GLOBALS['TSFE']->ATagParams;
+						$GLOBALS['TSFE']->ATagParams = 'title="' . $pages[$i1]['child'][$i2]['title'] . '"';
 						$menuContent .= $this->pi_LinkToPage(
 							$pages[$i1]['child'][$i2]['title'], 
 							$pages[$i1]['child'][$i2]['uid'], 
 							'', 
 							'');
-						#$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
+						$GLOBALS['TSFE']->ATagParams = $saveATagParams;
 					} else {
+						$saveATagParams = $GLOBALS['TSFE']->ATagParams;
+						$GLOBALS['TSFE']->ATagParams = 'title="' . $pages[$i1]['child'][$i2]['title'] . '"';
 						$menuContent .= $this->pi_LinkToPage(
 							$pages[$i1]['child'][$i2]['title'], 
 							$pages[$i1]['child'][$i2]['uid'], 
 							'', 
 							'');
+						$GLOBALS['TSFE']->ATagParams = $saveATagParams;
 					}
 					// THIRD
 					if ($pages[$i1]['child'][$i2]['hasChild'] 
@@ -421,7 +432,9 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 							// format link
 							if ($pages[$i1]['child'][$i2]['child'][$i3]['selected'] == 1) {
 								$menuContent .= "\t\t\t\t<li class='tx-nkwsubmenu-pi1-selected'>";
-								$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-highlight"'; // T3 hack
+								$GLOBALS['TSFE']->ATagParams = 'title="' 
+									. $pages[$i1]['child'][$i2]['child'][$i3]['title'] 
+									. '" class="tx-nkwsubmenu-pi1-highlight"'; // T3 hack
 								$menuContent .= $this->pi_LinkToPage(
 									$pages[$i1]['child'][$i2]['child'][$i3]['title'], 
 									$pages[$i1]['child'][$i2]['child'][$i3]['uid'], 
@@ -432,11 +445,15 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 								#$GLOBALS['TSFE']->page['tx_nkwsubmenu_picture'] = $pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture'];								
 							} else {
 								$menuContent .= "\t\t\t\t<li>";
+								$saveATagParams = $GLOBALS['TSFE']->ATagParams;
+								$GLOBALS['TSFE']->ATagParams = 'title="' 
+									. $pages[$i1]['child'][$i2]['child'][$i3]['title'] . '"';
 								$menuContent .= $this->pi_LinkToPage(
 									$pages[$i1]['child'][$i2]['child'][$i3]['title'], 
 									$pages[$i1]['child'][$i2]['child'][$i3]['uid'], 
 									'', 
 									'');
+								$GLOBALS['TSFE']->ATagParams = $saveATagParams;
 							}
 							$menuContent .= "</li>\n";
 						}
@@ -453,7 +470,7 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 		// show a back to startpage link if in knot
 		if ($knot) {
 			$pageInfo = $this->pageInfo(1, $lang);
-			$GLOBALS['TSFE']->ATagParams = 'class="tx-nkwsubmenu-pi1-trigger"'; // T3 hack
+			$GLOBALS['TSFE']->ATagParams = 'title="' . $pageInfo['title'] . '" class="tx-nkwsubmenu-pi1-trigger"'; // T3 hack
 			$content = '<ul><li>' . $this->pi_LinkToPage($pageInfo['title'], 1, '', '') . '</li></ul>' . $content;
 			$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
 		}
