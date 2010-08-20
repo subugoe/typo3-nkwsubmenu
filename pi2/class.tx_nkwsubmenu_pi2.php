@@ -58,7 +58,9 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 		$pageContent = $this->pageContent($id, $lang);
 		if ($pageContent) {
 			foreach ($pageContent AS $key => $value) {
-				$tmp .= '<li><a href="#c' . $value['uid'] . '">' . $value['header'] . '</a></li>';
+				$tmp .= '<li>';
+				$tmp .= '<a title="' . $value['header'] . '" href="#c' . $value['uid'] . '">' . $value['header'] . '</a>';
+				$tmp .= '</li>';
 			}
 			if ($tmp) {
 				$contentContent .= '<span class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('contentOfThisSite') 
@@ -74,8 +76,9 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 		$children = $this->pageHasChild($weAreHerePageID);
 		if ($children) {
 			foreach ($children AS $key => $value) {
-				$tmp .= '<li>' . $this->pi_LinkToPage($this->formatString($value['title']),$value['uid'], '', '') 
-					. '</li>';
+				$tmp .= '<li>';
+				$tmp .= $this->pi_LinkToPage($this->formatString($value['title']),$value['uid'], '', '');
+				$tmp .= '</li>';
 			}
 			if ($tmp) {
 				$contentChildren .= '<span class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') 
