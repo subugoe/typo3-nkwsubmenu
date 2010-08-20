@@ -15,8 +15,8 @@
 			<label index="pages.tx_nkwsubmenu_in_menu.I.2">exclude from menu</label>
 			<label index="pages.tx_nkwsubmenu_in_menu.I.3">not in menu but with knot</label>
 			<label index="pages.tx_nkwsubmenu_picture">Picture</label>
-			<label index="pages.tx_nkwsubmenu_picture_follow">Bild vererben</label>
-			<label index="pages.tx_nkwsubmenu_picture_nofollow">vererbtes Bild ignorieren</label>
+			<label index="pages.tx_nkwsubmenu_picture_follow">Bild vererben (en)</label>
+			<label index="pages.tx_nkwsubmenu_picture_nofollow">vererbtes Bild ignorieren (en)</label>
 			<label index="pages.tx_nkwsubmenu_knot">Knot</label>
 			<label index="pages.tx_nkwsubmenu_usecontent">Content Elemente in menu</label>
 			<label index="pages.tx_nkwsubmenu_knotheader">Knot Header Picture</label>

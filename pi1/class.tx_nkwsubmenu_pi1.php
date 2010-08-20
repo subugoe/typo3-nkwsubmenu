@@ -84,6 +84,9 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			$pages[$i1]['uid'] = $row1['uid'];
 			$pages[$i1]['pid'] = $row1['pid'];
 			$pages[$i1]['title'] = $this->formatString($row1['title']);
+			if ($lang > 0) {
+				$pages[$i1]['title'] = $this->formatString($this->getPageTitle($row1['uid'], $lang));
+			}
 			$pages[$i1]['tx_nkwsubmenu_in_menu'] = $row1['tx_nkwsubmenu_in_menu'];
 			$pages[$i1]['tx_nkwsubmenu_picture'] = $row1['tx_nkwsubmenu_picture'];
 			$pages[$i1]['tx_nkwsubmenu_knotheader'] = $row1['tx_nkwsubmenu_knotheader'];
@@ -135,6 +138,9 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			while($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2)) {
 				$pages[$i1]['child'][$i2]['uid'] = $row2['uid'];
 				$pages[$i1]['child'][$i2]['title'] = $this->formatString($row2['title']);
+				if ($lang > 0) {
+					$pages[$i1]['child'][$i2]['title'] = $this->formatString($this->getPageTitle($row2['uid'], $lang));
+				}
 				$pages[$i1]['child'][$i2]['tx_nkwsubmenu_picture'] = $row2['tx_nkwsubmenu_picture'];
 				$pages[$i1]["child"][$i2]["tx_nkwsubmenu_knotheader"] = $row2['tx_nkwsubmenu_knotheader'];
 				$pages[$i1]["child"][$i2]['tx_nkwsubmenu_picture_follow'] = $row2['tx_nkwsubmenu_picture_follow'];
@@ -183,6 +189,9 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 				while($row3 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res3)) {
 					$pages[$i1]['child'][$i2]['child'][$i3]['uid'] = $row3['uid'];
 					$pages[$i1]['child'][$i2]['child'][$i3]['title'] = $this->formatString($row3['title']);
+					if ($lang > 0) {
+						$pages[$i1]['child'][$i2]['child'][$i3]['title'] = $this->formatString($this->getPageTitle($row3['uid'], $lang));
+					}
 					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture'] = $row3['tx_nkwsubmenu_picture'];
 					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_knotheader'] = $row3['tx_nkwsubmenu_knotheader'];
 					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture_follow'] = $row3['tx_nkwsubmenu_picture_follow'];

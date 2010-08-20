@@ -124,11 +124,13 @@ class tx_nkwsubmenu_pi3 extends tx_nkwlib {
 						$tmp .= '<li class="liAsHeader"><a name="' . $letter . '"></a><strong>' . $letter 
 							. '</strong><ul>';
 					}
-					$tmp .= '<li>' . $this->pi_LinkToPage(
+					$tmp .= '<li>';
+					$tmp .= $this->pi_LinkToPage(
 						$value, 
 						$weAreHerePageID, 
 						'', 
-						array($this->prefixId . '[keyword]' => $value)) . '</li>';
+						array($this->prefixId . '[keyword]' => $value));
+					$tmp .= '</li>';
 				}
 			}
 			$tmp = $tmp;
