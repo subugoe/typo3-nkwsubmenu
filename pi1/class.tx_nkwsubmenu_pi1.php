@@ -53,13 +53,15 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 		$pageInfo = $this->pageInfo($weAreHerePageID, $lang);
 		// FIRST LEVEL
 		// query
-		// get all pages that are menu items (tx_nkwsubmenu_in_menu = '1') or those who are not, but contain a knot (tx_nkwsubmenu_in_menu = '3')
+		// get all pages which are menu items (tx_nkwsubmenu_in_menu = '1') or those who are not, 
+		// 		but contain a knot (tx_nkwsubmenu_in_menu = '3')
 		if ($knot) {
 			$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'pages',
 				'uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($knot, 'pages') 
-					. ' AND hidden != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages') 
+					. ' AND hidden != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(1, 'pages') 
+					// . ' AND hidden != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages') 
 					. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages'),
 				'',
 				'sorting ASC',
@@ -84,6 +86,7 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			$pages[$i1]['uid'] = $row1['uid'];
 			$pages[$i1]['pid'] = $row1['pid'];
 			$pages[$i1]['title'] = $this->formatString($row1['title']);
+			// we don't use the default language, so get the alternative page title
 			if ($lang > 0) {
 				$pages[$i1]['title'] = $this->formatString($this->getPageTitle($row1['uid'], $lang));
 			}
@@ -225,6 +228,28 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 					// check if third level item is within knot
 					if ($pages[$i1]['child'][$i2]['isKnot'] || $pages[$i1]['child'][$i2]['inKnot']) {
 						$pages[$i1]['child'][$i2]['child'][$i3]['inKnot'] = 1;
+					}
+					// check for page on level 4 and display parent levels as open in menu
+					$i4 = 0;
+					$res4 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'*', 
+						'pages', 
+						'pid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pages[$i1]['child'][$i2]['child'][$i3]['uid'], 'pages') 
+							. ' AND tx_nkwsubmenu_in_menu != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(2, 'pages')
+							. ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages') 
+							. ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0, 'pages'), 
+						'', 
+						'sorting ASC', 
+						'');
+					while($row4 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res4)) {
+						$pages[$i1]['child'][$i2]['child'][$i3]['child'][$i4]['uid'] = $row4['uid'];
+						$pages[$i1]['child'][$i2]['child'][$i3]['child'][$i4]['title'] = $row4['title'];
+						if ($weAreHerePageID == $row4['uid']) {
+							$pages[$i1]['child'][$i2]['child'][$i3]['selected'] = 1;
+							$pages[$i1]['child'][$i2]['selected'] = 2;
+							$pages[$i1]['selected'] = 3;
+						}
+						$i4++;
 					}
 					// helper
 					$i3++;
@@ -466,7 +491,7 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			$menuContent .= "</li>\n";
 		}
 		// wrap everything and go
-		$content = '<ul id="menu1" class="tx-nkwsubmenu-pi1-l1 expand">' . $menuContent.$content_tmp . '</ul>';
+		$content = '<ul id="menu1" class="tx-nkwsubmenu-pi1-l1 expand">' . $menuContent . $content_tmp . '</ul>';
 		// show a back to startpage link if in knot
 		if ($knot) {
 			$pageInfo = $this->pageInfo(1, $lang);
