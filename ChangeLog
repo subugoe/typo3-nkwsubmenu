@@ -2,3 +2,5 @@
 	* a title tag for links
 2010-08-30 - 0.0.34 - Nils K. Windisch
 	* Bug Fix: menu open and pages on fourth level selected
+2010-09-09 - 0.0.36 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* bug fix in ext_emconf.php
