@@ -4,3 +4,5 @@
 	* Bug Fix: menu open and pages on fourth level selected
 2010-09-09 - 0.0.36 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
 	* bug fix in ext_emconf.php
+2010-09-22 - 0.0.37 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* HTML fix

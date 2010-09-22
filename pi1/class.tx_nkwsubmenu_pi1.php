@@ -349,6 +349,7 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 			} else {
 				$menuContent .= "\t\t<li>";
 			}
+			// $menuContent .= '<span>';
 			// format link
 			if ($pages[$i1]['selected'] == 1) {
 				if ($pages[$i1]['hasChild'] && !$pages[$i1]['isKnot']) {
@@ -357,7 +358,8 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 				} else {
 					$GLOBALS['TSFE']->ATagParams = 'title="' . $pages[$i1]['title'] 
 						. '" class="tx-nkwsubmenu-pi1-highlight tx-nkwsubmenu-pi1-trigger"'; // T3 hack
-					$menuContent .= $this->pi_LinkToPage($pages[$i1]['title'], $pages[$i1]['uid'], '', '') . '</span>';
+					// $menuContent .= $this->pi_LinkToPage($pages[$i1]['title'], $pages[$i1]['uid'], '', '') . '</span>';
+					$menuContent .= $this->pi_LinkToPage($pages[$i1]['title'], $pages[$i1]['uid'], '', '');
 					$GLOBALS['TSFE']->ATagParams = $saveATagParams; // T3 hack
 				}
 				// set banner picture
