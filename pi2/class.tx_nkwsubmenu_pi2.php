@@ -44,6 +44,7 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 	function main($content,$conf)	{
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
+		// $this->pi_USER_INT_obj = 1;
 		$this->pi_loadLL();
 		// basics
 		$weAreHerePageID = $this->getPageUID();
@@ -95,7 +96,7 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 		$contentKeywords .= '<span class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('keywordsOfThisSite') 
 			. ':</span>';
 		$contentKeywords .= '<ul>';
-		$contentKeywords .= $this->keywordsForPage($weAreHerePageID, $lang, 'infobox');
+		$contentKeywords .= $this->keywordsForPage($weAreHerePageID, $lang, 'infobox', $conf['landing']);
 		$contentKeywords .= '</ul>';
 		$contentKeywords .= '</div>';
 		// collect

@@ -6,3 +6,5 @@
 	* bug fix in ext_emconf.php
 2010-09-22 - 0.0.37 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
 	* HTML fix
+2010-10-25 - 0.0.38 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* Bugfix WWW-319
