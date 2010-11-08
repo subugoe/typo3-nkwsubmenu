@@ -58,6 +58,7 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 
 		// get page content
 		$pageContent = $this->pageContent($id, $lang);
+		$contentContent .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('contentOfThisSite') . '</div>';
 		if ($pageContent) {
 			foreach ($pageContent AS $key => $value) {
 				$tmp .= '<li>';
@@ -65,13 +66,11 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 				$tmp .= '</li>';
 			}
 			if ($tmp) {
-				$contentContent .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('contentOfThisSite') 
-					. '</div>';
 				$contentContent .= '<ul>' . $tmp . '</ul>';
 			}
 			unset($tmp);
 		} else {
-			$contentContent = $this->pi_getLL('noContentOfThisSite');
+			$contentContent .= '<p>' . $this->pi_getLL('noContentOfThisSite') . '</p>';
 		}
 		$contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
 
