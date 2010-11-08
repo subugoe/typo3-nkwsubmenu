@@ -55,6 +55,7 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 		if (!$id) {
 			$id = $weAreHerePageID;
 		}
+
 		// get page content
 		$pageContent = $this->pageContent($id, $lang);
 		if ($pageContent) {
@@ -64,8 +65,8 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 				$tmp .= '</li>';
 			}
 			if ($tmp) {
-				$contentContent .= '<span class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('contentOfThisSite') 
-					. ':</span>';
+				$contentContent .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('contentOfThisSite') 
+					. '</div>';
 				$contentContent .= '<ul>' . $tmp . '</ul>';
 			}
 			unset($tmp);
@@ -73,6 +74,7 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 			$contentContent = $this->pi_getLL('noContentOfThisSite');
 		}
 		$contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
+
 		// get children
 		$children = $this->pageHasChild($weAreHerePageID);
 		if ($children) {
@@ -82,25 +84,26 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 				$tmp .= '</li>';
 			}
 			if ($tmp) {
-				$contentChildren .= '<span class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') 
-					. ':</span>';
+				$contentChildren .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') 
+					. '</div>';
 				$contentChildren .= '<ul>' . $tmp . '</ul>';
 			}
 			unset($tmp);
-		} else {
-			$contentChildren = $this->pi_getLL('noSubpages');
+			$contentChildren = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
 		}
-		$contentChildren = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
+		
+
 		// keywords
 		$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
-		$contentKeywords .= '<span class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('keywordsOfThisSite') 
-			. ':</span>';
+		$contentKeywords .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('keywordsOfThisSite') 
+			. '</div>';
 		$contentKeywords .= '<ul>';
 		$contentKeywords .= $this->keywordsForPage($weAreHerePageID, $lang, 'infobox', $conf['landing']);
 		$contentKeywords .= '</ul>';
 		$contentKeywords .= '</div>';
+
 		// collect
-		$content = $contentContent.$contentChildren.$contentKeywords;
+		$content = $contentChildren.$contentContent.$contentKeywords;
 		// return
 		return $this->pi_wrapInBaseClass($content);
 	}
