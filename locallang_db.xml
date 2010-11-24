@@ -19,6 +19,7 @@
 			<label index="pages.tx_nkwsubmenu_picture_nofollow">vererbtes Bild ignorieren (en)</label>
 			<label index="pages.tx_nkwsubmenu_knot">Knot</label>
 			<label index="pages.tx_nkwsubmenu_usecontent">Content Elemente in menu</label>
+			<label index="pages.tx_nkwsubmenu_showsidebar">Show Sidebar</label>
 			<label index="pages.tx_nkwsubmenu_knotheader">Knot Header Picture</label>
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -35,6 +36,7 @@
 			<label index="pages.tx_nkwsubmenu_picture_nofollow">vererbtes Bild ignorieren</label>
 			<label index="pages.tx_nkwsubmenu_knot">Knoten</label>
 			<label index="pages.tx_nkwsubmenu_usecontent">Content Elemente im Menü</label>
+			<label index="pages.tx_nkwsubmenu_showsidebar">Show Sidebar</label>
 			<label index="pages.tx_nkwsubmenu_knotheader">Knotenkopfgrafik</label>
 		</languageKey>
 	</data>

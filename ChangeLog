@@ -12,3 +12,6 @@
 	* Infobx überarbeiten WWW-316
 2010-11-08 - 0.0.40 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
 	* Infobx überarbeiten WWW-316
+2010-11-23 - 0.0.41 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* run: "UPDATE pages SET tx_nkwsubmenu_showsidebar = '1'"
+	* Improvement: WWW-316 Infobox überarbeiten
