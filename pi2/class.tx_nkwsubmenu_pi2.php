@@ -80,9 +80,11 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 		$children = $this->pageHasChild($weAreHerePageID);
 		if ($children) {
 			foreach ($children AS $key => $value) {
-				$tmp .= '<li>';
-				$tmp .= $this->pi_LinkToPage($this->formatString($value['title']),$value['uid'], '', '');
-				$tmp .= '</li>';
+				if ($value['tx_nkwsubmenu_in_menu'] != 2) { // don't show if page is set to "exclude from menu"
+					$tmp .= '<li>';
+					$tmp .= $this->pi_LinkToPage($this->formatString($value['title']),$value['uid'], '', '');
+					$tmp .= '</li>';
+				}
 			}
 			if ($tmp) {
 				$contentChildren .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') 
