@@ -61,9 +61,11 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 		$contentContent .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('contentOfThisSite') . '</div>';
 		if ($pageContent) {
 			foreach ($pageContent AS $key => $value) {
-				$tmp .= '<li>';
-				$tmp .= '<a title="' . $value['header'] . '" href="#c' . $value['uid'] . '">' . $value['header'] . '</a>';
-				$tmp .= '</li>';
+				if ($value['colPos'] == 0) {
+					$tmp .= '<li>';
+					$tmp .= '<a title="' . $value['header'] . '" href="#c' . $value['uid'] . '">' . $value['header'] . '</a>';
+					$tmp .= '</li>';
+				}
 			}
 			if ($tmp) {
 				$contentContent .= '<ul>' . $tmp . '</ul>';
