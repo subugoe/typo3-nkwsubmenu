@@ -9,14 +9,14 @@
 			<label index="keywordsOfThisSite">Keywords</label>
 			<label index="contentOfThisSite">Contents</label>
 			<label index="noContentOfThisSite">This page has no content yet.</label>
-			<label index="subpages">Subpages</label>
+			<label index="subpages">More on these pages</label>
 			<label index="noSubpages">This page has no subpages.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="keywordsOfThisSite">Schlagwörter dieser Seite</label>
-			<label index="contentOfThisSite">Inhalte dieser Seite</label>
+			<label index="keywordsOfThisSite">Schlagwörter</label>
+			<label index="contentOfThisSite">Inhaltsverzeichnis</label>
 			<label index="noContentOfThisSite">Dieser Seite hat noch keinen Inhalt</label>
-			<label index="subpages">Unterseiten</label>
+			<label index="subpages">Mehr auf diesen Seiten</label>
 			<label index="noSubpages">Diese Seite hat keine Unterseiten.</label>
 		</languageKey>
 	</data>

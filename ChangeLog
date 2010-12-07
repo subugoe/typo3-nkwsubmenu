@@ -17,5 +17,9 @@
 	* Improvement: WWW-316 Infobox überarbeiten
 2010-11-25 - 0.0.42 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
     * Fix: WWW-448 Anzeige von Seitenelementen nur aus der Hauptspalte in Infobox (Inhalte dieser Seite)
-2010-11-25 - 0.0.43 - Nils K. Windisch
+2010-11-25 - 0.0.43 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
 	* Fix:  WWW-467 Anzeige von Unterseiten in der Infobox, obwohl diese auf "exclude from menu" gesetzt sind
+2010-12-07 - 0.0.44 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* WWW-474 Umbennung: "Unterseiten" in "Mehr auf diesen Seiten"
+	* WWW-476 Umbennung: "Schlagwörter dieser Seite" in "Schlagwörter"
+	* WWW-475 Umbenennung: "Inhalte dieser Seite" in "Inhaltsverzeichnis"
