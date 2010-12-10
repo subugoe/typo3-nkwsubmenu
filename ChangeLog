@@ -23,3 +23,5 @@
 	* WWW-474 Umbennung: "Unterseiten" in "Mehr auf diesen Seiten"
 	* WWW-476 Umbennung: "Schlagwörter dieser Seite" in "Schlagwörter"
 	* WWW-475 Umbenennung: "Inhalte dieser Seite" in "Inhaltsverzeichnis"
+2010-12-10 - 0.0.45 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* WWW-467 Anzeige von Unterseiten in der Infobox, obwohl diese auf "exclude from menu" gesetzt sind (erst mal wieder rueckgaengig gemacht (auf Wunsch von Ruth))
