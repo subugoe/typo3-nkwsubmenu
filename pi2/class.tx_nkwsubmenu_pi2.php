@@ -67,8 +67,18 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 					$tmp .= '</li>';
 				}
 			}
+                        # hook to extend table of contents (add anchors etc.)
+                        $i = 0;
+                        if(isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC']))    {
+                            foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'] as $userFunc) {
+                                if($userFunc)   {
+                                    $i++;
+                                    t3lib_div::callUserFunction($userFunc, $tmp, $this);
+                                }
+                            }
+                        }
 			if ($tmp) {
-				$contentContent .= '<ul>' . $tmp . '</ul>';
+				$contentContent .= '<ul>'. $tmp . '</ul>';
 			}
 			unset($tmp);
 		} else {
@@ -76,15 +86,17 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 		}
 		$contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
 
+
+
 		// get children
 		$children = $this->pageHasChild($weAreHerePageID);
 		if ($children) {
-			foreach ($children AS $key => $value) {
-				// if ($value['tx_nkwsubmenu_in_menu'] != 2) { // don't show if page is set to "exclude from menu"
-					$tmp .= '<li>';
+                        foreach ($children AS $key => $value) {
+				if ($value['tx_nkwsubmenu_in_menu'] != 2) { // don't show if page is set to "exclude from menu"
+					$tmp .= '<li>'.$i;
 					$tmp .= $this->pi_LinkToPage($this->formatString($value['title']),$value['uid'], '', '');
 					$tmp .= '</li>';
-				// }
+				}
 			}
 			if ($tmp) {
 				$contentChildren .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') 
