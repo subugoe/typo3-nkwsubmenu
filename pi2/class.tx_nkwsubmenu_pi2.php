@@ -68,11 +68,9 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 				}
 			}
                         # hook to extend table of contents (add anchors etc.)
-                        $i = 0;
                         if(isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC']))    {
                             foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'] as $userFunc) {
                                 if($userFunc)   {
-                                    $i++;
                                     t3lib_div::callUserFunction($userFunc, $tmp, $this);
                                 }
                             }
