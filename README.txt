@@ -1,6 +1,15 @@
 =SUBMENU=
 
-=HOOK=
+==PI1==
+
+Plugin 'SUB Menu' for the 'nkwsubmenu' extension.
+
+==PI2==
+
+Plugin 'Infobox' for the 'nkwsubmenu' extension.
+
+===HOOK===
+
 Die Extension submenu verfügt in class.tx_nkwsubmenu_pi2, der Extension für die
 rechte Sidebar, einen Hook um aus anderen Extensions Inhalte, wie Anker, Links
 etc. in die Sidebar unter dem Punkt Inhaltsverzeichnis einfügen zu können.
@@ -8,7 +17,8 @@ Es stehen dabei zwei Möglichkeiten zu Verfügung, entweder kann Inhalt an die
 bestehende Inhaltsliste angehängt oder diese durch Überschreiben komplett neu
 generiert werden.
 
-Funktionsweise:
+====Funktionsweise====
+
 Die Extension submenu prüft jedesmal wenn sie eingebunden wird, ob ein Eintrag
 (userFunction) für sie vorliegt, führt diese (ggf.) aus, und übernimmt den Rück-
 gabewert der Funktion in die temp. Variable $tmp.
@@ -32,7 +42,7 @@ if ($tmp) {
         $contentContent .= '<ul>'. $tmp . '</ul>';
 }
 
-Beispiel:
+====Beispiel====
 Ein Beispiel für das Nutzen eines Hooks ist in der Extension patenschaften zu finden.
 
 In der ext_localconf.php der Extension muss zuerst eine entsprechende Zeile angehängt
@@ -53,3 +63,7 @@ public function hookFunc(&$tmp, $obj) {
         }
     }
 }
+
+==PI3==
+
+Plugin 'Keyword List' for the 'nkwsubmenu' extension.

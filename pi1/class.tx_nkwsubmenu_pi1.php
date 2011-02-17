@@ -28,6 +28,7 @@ require_once(t3lib_extMgm::extPath('nkwlib') . 'class.tx_nkwlib.php');
  * @author	Nils K. Windisch <windisch@sub.uni-goettingen.de>
  * @package	TYPO3
  * @subpackage	tx_nkwsubmenu
+ * $Id$
  */
 class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 	var $prefixId      = 'tx_nkwsubmenu_pi1';
