@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'SUB Menu',
-	'description' => 'Lorem ipsum dolor sit amet',
+	'description' => 'Menues der SUB Webseiten',
 	'category' => 'plugin',
 	'author' => 'Nils K. Windisch',
 	'author_email' => 'windisch@sub.uni-goettingen.de',
@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'conflicts' => '',
 	'priority' => '',
 	'module' => '',
-	'state' => 'alpha',
+	'state' => 'beta',
 	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => 'Goettingen State and University Library, Germany http://www.sub.uni-goettingen.de',
-	'version' => '0.0.44',
+	'version' => '0.1.0',
 	'constraints' => array(
 		'depends' => array(
 			'nkwlib' => '',

@@ -23,3 +23,9 @@
 	* WWW-474 Umbennung: "Unterseiten" in "Mehr auf diesen Seiten"
 	* WWW-476 Umbennung: "Schlagwörter dieser Seite" in "Schlagwörter"
 	* WWW-475 Umbenennung: "Inhalte dieser Seite" in "Inhaltsverzeichnis"
+
+2011-02-17 - 0.1.0 - Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+	* Typos gefixt
+	* Version auf 0.1.0 beta erhoeht
+	* Documentation stubs und unbenutztes Typoscript entfernt
+	* Bugfix in class.tx_nkwsubmenu_pi3

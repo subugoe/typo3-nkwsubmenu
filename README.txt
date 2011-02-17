@@ -35,7 +35,7 @@ if ($tmp) {
 Beispiel:
 Ein Beispiel für das Nutzen eines Hooks ist in der Extension patenschaften zu finden.
 
-In der ext_localconf.php der Extesion muss zuerst eine entsprechende Zeile angehängt
+In der ext_localconf.php der Extension muss zuerst eine entsprechende Zeile angehängt
 werden um die UserFunction in Typo3 zu registrieren.
 
 $TYPO3_CONF_VARS['EXTCONF']['nkwsubmenu']['extendTOC'][$_EXTKEY] = 'EXT:'.$_EXTKEY.'/pi1/class.tx_patenschaften_pi1.php:tx_patenschaften_pi1->hookFunc';
