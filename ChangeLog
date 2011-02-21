@@ -29,3 +29,6 @@
 	* Version auf 0.1.0 beta erhoeht
 	* Documentation stubs und unbenutztes Typoscript entfernt
 	* Bugfix in class.tx_nkwsubmenu_pi3
+
+2011-02-21 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+	* (Erneuter) Fix fuer WWW-467 - Anzeige in Infobox wenn auf exclude from menu
