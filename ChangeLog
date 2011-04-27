@@ -1,28 +1,8 @@
-2010-08-20 - 0.0.33 - Nils K. Windisch
-	* a title tag for links
-2010-08-30 - 0.0.34 - Nils K. Windisch
-	* Bug Fix: menu open and pages on fourth level selected
-2010-09-09 - 0.0.36 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
-	* bug fix in ext_emconf.php
-2010-09-22 - 0.0.37 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
-	* HTML fix
-2010-10-25 - 0.0.38 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
-	* Bugfix WWW-319
-2010-11-08 - 0.0.39 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
-	* Infobx überarbeiten WWW-316
-2010-11-08 - 0.0.40 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
-	* Infobx überarbeiten WWW-316
-2010-11-23 - 0.0.41 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
-	* run: "UPDATE pages SET tx_nkwsubmenu_showsidebar = '1'"
-	* Improvement: WWW-316 Infobox überarbeiten
-2010-11-25 - 0.0.42 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
-    * Fix: WWW-448 Anzeige von Seitenelementen nur aus der Hauptspalte in Infobox (Inhalte dieser Seite)
-2010-11-25 - 0.0.43 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
-	* Fix:  WWW-467 Anzeige von Unterseiten in der Infobox, obwohl diese auf "exclude from menu" gesetzt sind
-2010-12-07 - 0.0.44 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
-	* WWW-474 Umbennung: "Unterseiten" in "Mehr auf diesen Seiten"
-	* WWW-476 Umbennung: "Schlagwörter dieser Seite" in "Schlagwörter"
-	* WWW-475 Umbenennung: "Inhalte dieser Seite" in "Inhaltsverzeichnis"
+2011-04-27 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+	* Einbinden des Javascripts ueber diese Extension (pi1)
+
+2011-02-21 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+	* (Erneuter) Fix fuer WWW-467 - Anzeige in Infobox wenn auf exclude from menu
 
 2011-02-17 - 0.1.0 - Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
 	* Typos gefixt
@@ -30,5 +10,38 @@
 	* Documentation stubs und unbenutztes Typoscript entfernt
 	* Bugfix in class.tx_nkwsubmenu_pi3
 
-2011-02-21 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
-	* (Erneuter) Fix fuer WWW-467 - Anzeige in Infobox wenn auf exclude from menu
+2010-12-07 - 0.0.44 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* WWW-474 Umbennung: "Unterseiten" in "Mehr auf diesen Seiten"
+	* WWW-476 Umbennung: "Schlagwörter dieser Seite" in "Schlagwörter"
+	* WWW-475 Umbenennung: "Inhalte dieser Seite" in "Inhaltsverzeichnis"
+
+2010-11-25 - 0.0.43 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* Fix:  WWW-467 Anzeige von Unterseiten in der Infobox, obwohl diese auf "exclude from menu" gesetzt sind
+
+2010-11-25 - 0.0.42 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+    * Fix: WWW-448 Anzeige von Seitenelementen nur aus der Hauptspalte in Infobox (Inhalte dieser Seite)
+
+2010-11-23 - 0.0.41 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* run: "UPDATE pages SET tx_nkwsubmenu_showsidebar = '1'"
+	* Improvement: WWW-316 Infobox überarbeiten
+
+2010-11-08 - 0.0.40 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* Infobx überarbeiten WWW-316
+
+2010-11-08 - 0.0.39 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* Infobx überarbeiten WWW-316
+
+2010-10-25 - 0.0.38 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* Bugfix WWW-319
+
+2010-09-22 - 0.0.37 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* HTML fix
+
+2010-09-09 - 0.0.36 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* bug fix in ext_emconf.php
+
+2010-08-30 - 0.0.34 - Nils K. Windisch
+	* Bug Fix: menu open and pages on fourth level selected
+
+2010-08-20 - 0.0.33 - Nils K. Windisch
+	* a title tag for links

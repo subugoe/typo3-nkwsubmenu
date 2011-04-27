@@ -46,6 +46,11 @@ class tx_nkwsubmenu_pi1 extends tx_nkwlib {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
+
+		
+		//Javascript der Extension einbinden
+		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] = '<script type="text/javascript"src="/typo3conf/ext/nkwsubmenu/pi1/res/js/menu.js" language="JavaScript"></script>';
+			
 		// basics
 		$weAreHerePageID = $GLOBALS['TSFE']->id; // page ID
 		$saveATagParams = $GLOBALS['TSFE']->ATagParams; // T3 hack
