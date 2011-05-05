@@ -88,7 +88,25 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 		}
 		$contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
 
-
+                // insert pictures in side-menu via hook
+		$contentPictures = '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('sideBarImages') . '</div>';
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
+                    $tmp = "";
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
+                        if ($userFunc) {
+                            t3lib_div::callUserFunction($userFunc, $tmp, $this);
+                        }
+                    }
+                    if ($tmp) {
+                        $contentPictures .= '<div id="tx-nkwsubmenu-pi2-imagelistframe">' . $tmp . '</div>';
+                        $contentPictures  = '<div id="tx-nkwsubmenu-pi2-imagelist">' . $contentPictures . '</div>';
+                    }   else    {
+                        $contentPictures = '';
+                    }
+                    unset($tmp);
+                }   else    {
+                    $contentPictures = '';
+                }
 
 		// get children
 		$children = $this->pageHasChild($weAreHerePageID);
@@ -120,7 +138,7 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 		$contentKeywords .= '</div>';
 
 		// collect
-		$content = $contentChildren . $contentContent . $contentKeywords;
+		$content = $contentChildren . $contentContent . $contentPictures .  $contentKeywords;
 		// return
 		return $this->pi_wrapInBaseClass($content);
 	}
