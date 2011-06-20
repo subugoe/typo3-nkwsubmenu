@@ -55,6 +55,12 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 			// Embed Javascript of this extension
 		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] = '<script type="text/javascript"src="/typo3conf/ext/nkwsubmenu/pi1/res/js/menu.js" language="JavaScript"></script>';
 
+                // Javascript der JK-Navigation einbinden
+                $GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<script type="text/javascript"src="/typo3conf/ext/nkwsubmenu/pi1/res/js/jknav.js" language="JavaScript"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<script type="text/javascript"src="/typo3conf/ext/nkwsubmenu/pi1/res/js/hotkeys.js" language="JavaScript"></script>';
+        	// Konfigurieren der JK-Navigation
+                $GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<script type="text/javascript"src="/typo3conf/ext/nkwsubmenu/pi1/res/js/jkrun.js" language="JavaScript"></script>';
+			
 			// page ID
 		$weAreHerePageId = $GLOBALS['TSFE']->id;
 			// T3 hack
@@ -68,7 +74,7 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 		 * get all pages which are menu items (tx_nkwsubmenu_in_menu = '1')
 		 * or those who are not, but contain a knot (tx_nkwsubmenu_in_menu = '3')
 		 */
-		if ($knot) {
+                if ($knot) {
 			$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'*',
 							'pages',
