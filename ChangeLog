@@ -1,3 +1,6 @@
+2011-06-20 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+	* Anpassung an statische Aufrufe der Methoden
+
 2011-04-27 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
 	* Einbinden des Javascripts ueber diese Extension (pi1)
 

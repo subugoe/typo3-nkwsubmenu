@@ -1,5 +1,4 @@
 <?php
-
 /* * *************************************************************
  *  Copyright notice
  *
@@ -22,46 +21,46 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-require_once(t3lib_extMgm::extPath('nkwlib') . 'class.tx_nkwlib.php');
 
 /**
  * Plugin 'Infobox' for the 'nkwsubmenu' extension.
  *
  * @author	Nils K. Windisch <windisch@sub.uni-goettingen.de>
+ * @author Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
  * @package	TYPO3
  * @subpackage	tx_nkwsubmenu
  */
-class tx_nkwsubmenu_pi2 extends tx_nkwlib {
+class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
-	var $prefixId = 'tx_nkwsubmenu_pi2';
-	var $scriptRelPath = 'pi2/class.tx_nkwsubmenu_pi2.php';
-	var $extKey = 'nkwsubmenu';
-	var $pi_checkCHash = true;
+	public $prefixId = 'tx_nkwsubmenu_pi2';
+	public $scriptRelPath = 'pi2/class.tx_nkwsubmenu_pi2.php';
+	public $extKey = 'nkwsubmenu';
+	public $pi_checkCHash = TRUE;
 
 	/**
 	 * The main method of the PlugIn
 	 *
-	 * @param	string		$content: The PlugIn content
-	 * @param	array		$conf: The PlugIn configuration
-	 * @return	The content that is displayed on the website
+	 * @param string $content The PlugIn content
+	 * @param array $conf The PlugIn configuration
+	 * @return The content that is displayed on the website
 	 */
-	function main($content, $conf) {
+	public function main($content, $conf) {
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
-		// $this->pi_USER_INT_obj = 1;
+			// $this->pi_USER_INT_obj = 1;
 		$this->pi_loadLL();
-		// basics
-		$weAreHerePageID = $this->getPageUID();
-		// T3 hack
-		$saveATagParams = $GLOBALS['TSFE']->ATagParams;
-		$lang = $this->getLanguage();
-		$id = $this->checkForAlienContent($weAreHerePageID);
+			// basics
+		$weAreHerePageId = tx_nkwlib::getPageUid();
+			// T3 hack
+		$saveAnchorTagParams = $GLOBALS['TSFE']->ATagParams;
+		$lang = tx_nkwlib::getLanguage();
+		$id = tx_nkwlib::checkForAlienContent($weAreHerePageId);
 		if (!$id) {
-			$id = $weAreHerePageID;
+			$id = $weAreHerePageId;
 		}
 
-		// get page content
-		$pageContent = $this->pageContent($id, $lang);
+			// get page content
+		$pageContent = tx_nkwlib::pageContent($id, $lang);
 		$contentContent .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('contentOfThisSite') . '</div>';
 		if ($pageContent) {
 			foreach ($pageContent AS $key => $value) {
@@ -71,7 +70,7 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
 					$tmp .= '</li>';
 				}
 			}
-			// hook to extend table of contents (add anchors etc.)
+				// hook to extend table of contents (add anchors etc.)
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'] as $userFunc) {
 					if ($userFunc) {
@@ -108,38 +107,33 @@ class tx_nkwsubmenu_pi2 extends tx_nkwlib {
                     $contentPictures = '';
                 }
 
-		// get children
-		$children = $this->pageHasChild($weAreHerePageID);
+			// get children
+		$children = tx_nkwlib::pageHasChild($weAreHerePageID);
 		if ($children) {
 			foreach ($children AS $key => $value) {
-				//if ($value['tx_nkwsubmenu_in_menu'] != 2) { // don't show if page is set to "exclude from menu"
 					$tmp .= '<li>' . $i;
-					$tmp .= $this->pi_LinkToPage($this->formatString($value['title']), $value['uid'], '', '');
+					$tmp .= $this->pi_LinkToPage(tx_nkwlib::formatString($value['title']), $value['uid'], '', '');
 					$tmp .= '</li>';
-				//}
 			}
 			if ($tmp) {
-				$contentChildren .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages')
-						. '</div>';
+				$contentChildren .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') . '</div>';
 				$contentChildren .= '<ul>' . $tmp . '</ul>';
 			}
 			unset($tmp);
 			$contentChildren = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
 		}
 
-
-		// keywords
+			// keywords
 		$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
-		$contentKeywords .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('keywordsOfThisSite')
-				. '</div>';
+		$contentKeywords .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('keywordsOfThisSite') . '</div>';
 		$contentKeywords .= '<ul>';
-		$contentKeywords .= $this->keywordsForPage($weAreHerePageID, $lang, 'infobox', $conf['landing']);
+		$contentKeywords .= tx_nkwlib::keywordsForPage($weAreHerePageId, $lang, 'infobox', $conf['landing']);
 		$contentKeywords .= '</ul>';
 		$contentKeywords .= '</div>';
 
-		// collect
+			// collect
 		$content = $contentChildren . $contentContent . $contentPictures .  $contentKeywords;
-		// return
+			// return
 		return $this->pi_wrapInBaseClass($content);
 	}
 
