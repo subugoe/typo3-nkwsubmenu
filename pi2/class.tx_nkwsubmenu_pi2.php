@@ -108,7 +108,10 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
                 }
 
 			// get children
-		$children = tx_nkwlib::pageHasChild($weAreHerePageID);
+		$children = tx_nkwlib::pageHasChild($weAreHerePageId);
+				xdebug_break();
+				xdebug_var_dump();
+
 		if ($children) {
 			foreach ($children AS $key => $value) {
 					$tmp .= '<li>' . $i;
