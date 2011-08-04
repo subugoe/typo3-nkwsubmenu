@@ -53,13 +53,13 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 
 			// Embed Javascript of this extension
-		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] = '<script type="text/javascript"src="/typo3conf/ext/nkwsubmenu/pi1/res/js/menu.js" language="JavaScript"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId. '-1'] = '<script type="text/javascript" src="/typo3conf/ext/nkwsubmenu/pi1/res/js/menu.js"></script>';
 		
 			// Javascript der JK-Navigation einbinden
-		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<script type="text/javascript"src="/typo3conf/ext/nkwsubmenu/pi1/res/js/jknav.js" language="JavaScript"></script>';
-		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<script type="text/javascript"src="/typo3conf/ext/nkwsubmenu/pi1/res/js/hotkeys.js" language="JavaScript"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId. '-2'] .= '<script type="text/javascript" src="/typo3conf/ext/nkwsubmenu/pi1/res/js/jknav.js"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId. '-3'] .= '<script type="text/javascript" src="/typo3conf/ext/nkwsubmenu/pi1/res/js/hotkeys.js"></script>';
 			// Konfigurieren der JK-Navigation
-		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<script type="text/javascript"src="/typo3conf/ext/nkwsubmenu/pi1/res/js/jkrun.js" language="JavaScript"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId. '-4'] .= '<script type="text/javascript" src="/typo3conf/ext/nkwsubmenu/pi1/res/js/jkrun.js"></script>';
 
 			// page ID
 		$weAreHerePageId = $GLOBALS['TSFE']->id;

@@ -9,14 +9,14 @@
  * @homepage  http://code.google.com/p/lilbtn/wiki/JsJqueryJknav
  * @example   http://lilbtn.googlecode.com/hg/src/static/js/jquery/jquery.jknav.demo.html
 */
-(function ($) {
+(function (jQuery) {
 	/**
 	 * Print out debug infomation via console object
 	 * @param {String} debug information
 	 */
 	function log (message) {
 		var console = window.console;
-		if ($.jknav.DEBUG && console && console.log)
+		if (jQuery.jknav.DEBUG && console && console.log)
 			console.log('jknav: ' + message);
 		}
 
@@ -27,23 +27,23 @@
 	 * @param {String} name Navagation set name
 	 * @return {jQuery} <code>this</code> for chaining
 	 */
-	$.fn.jknav = function (callback, name) {
+	jQuery.fn.jknav = function (callback, name) {
 		if (name == null)
 			name = 'default';
-		if ($.jknav.items[name] == null)
-			$.jknav.items[name] = [];
+		if (jQuery.jknav.items[name] == null)
+			jQuery.jknav.items[name] = [];
 		return this.each(function () {
-			$.jknav.items[name].push([this, callback]);
-			$.jknav.items[name].sort(function (a, b) {
-				var a_top = $(a[0]).offset().top;
-				var b_top = $(b[0]).offset().top;
+			jQuery.jknav.items[name].push([this, callback]);
+			jQuery.jknav.items[name].sort(function (a, b) {
+				var a_top = jQuery(a[0]).offset().top;
+				var b_top = jQuery(b[0]).offset().top;
 				if (a_top < b_top)
 					return -1;
 				if (a_top > b_top)
 					return 1;
 				if (a_top == b_top) {
-					var a_left = $(a[0]).offset().left;
-					var b_left = $(b[0]).offset().left;
+					var a_left = jQuery(a[0]).offset().left;
+					var b_left = jQuery(b[0]).offset().left;
 					if (a_left < b_left)
 						return -1;
 					if (a_left > b_left)
@@ -60,9 +60,9 @@
 	 * @param {Object} opts Options
 	 */
 	function do_callback(index, opts) {
-		var callback = $.jknav.items[opts.name][index][1];
+		var callback = jQuery.jknav.items[opts.name][index][1];
 		if (callback)
-			callback($.jknav.items[opts.name][index][0]);
+			callback(jQuery.jknav.items[opts.name][index][0]);
 		}
 
 	/**
@@ -71,15 +71,15 @@
 	 * @param {Object} opts Options
 	 */
 	function calc_index(offset, opts) {
-		var index = $.jknav.index[opts.name];
+		var index = jQuery.jknav.index[opts.name];
 		log('Calculating index for ' + opts.name + ', current index = ' + index);
 		if (index == null) {
 			// Initialize index
-			var top = $($.jknav.TARGET).scrollTop();
-			log($.jknav.TARGET + ' top = ' + top);
-			$.each($.jknav.items[opts.name], function (idx, item) {
+			var top = jQuery(jQuery.jknav.TARGET).scrollTop();
+			log(jQuery.jknav.TARGET + ' top = ' + top);
+			jQuery.each(jQuery.jknav.items[opts.name], function (idx, item) {
 				// Got a strange case: top = 180, item_top = 180.35...
-				var item_top = Math.floor($(item).offset().top);
+				var item_top = Math.floor(jQuery(item).offset().top);
 				if (top >= item_top)
 					index = idx;
 				});
@@ -87,26 +87,26 @@
 				if (offset > 0)
 					index = 0
 				else
-					index = $.jknav.items[opts.name].length - 1;
+					index = jQuery.jknav.items[opts.name].length - 1;
 				}
 			else {
-				if (offset > 0 && ++index >= $.jknav.items[opts.name].length)
+				if (offset > 0 && ++index >= jQuery.jknav.items[opts.name].length)
 					index = 0
-				else if (offset < 0 && top == Math.floor($($.jknav.items[opts.name][index]).offset().top) && --index < 0)
-					index = $.jknav.items[opts.name].length - 1;
+				else if (offset < 0 && top == Math.floor(jQuery(jQuery.jknav.items[opts.name][index]).offset().top) && --index < 0)
+					index = jQuery.jknav.items[opts.name].length - 1;
 				}
 			}
 		else {
-			if (!opts.circular && ((index == 0 && offset == -1) || (index == $.jknav.items[opts.name].length - 1 && offset == 1)))
+			if (!opts.circular && ((index == 0 && offset == -1) || (index == jQuery.jknav.items[opts.name].length - 1 && offset == 1)))
 				return index;
 			index += offset;
-			if (index >= $.jknav.items[opts.name].length)
+			if (index >= jQuery.jknav.items[opts.name].length)
 				index = 0;
 			if (index < 0)
-				index = $.jknav.items[opts.name].length - 1;
+				index = jQuery.jknav.items[opts.name].length - 1;
 			}
 		log('new index = ' + index);
-		$.jknav.index[opts.name] = index;
+		jQuery.jknav.index[opts.name] = index;
 		return index;
 		}
 		
@@ -127,10 +127,10 @@
 		log('keyup: ' + e.target.tagName + ', key: ' + ch);
 		if (ch == opts.up.toLowerCase() || ch == opts.down.toLowerCase()) {
 			if (opts.reevaluate)
-				$.jknav.index[opts.name] = null;
+				jQuery.jknav.index[opts.name] = null;
 			var index = calc_index((ch == opts.down.toLowerCase()) ? 1 : -1, opts);
-			var $item = $($.jknav.items[opts.name][index][0]);
-			$($.jknav.TARGET).animate(
+			var $item = jQuery(jQuery.jknav.items[opts.name][index][0]);
+			jQuery(jQuery.jknav.TARGET).animate(
 				{
 					scrollLeft: Math.floor($item.offset().left),
 					scrollTop: Math.floor($item.offset().top)
@@ -144,7 +144,7 @@
 			}
 		}
 
-	$.jknav = {
+	jQuery.jknav = {
 		index: {},
 		items: {},
 		opts: {},
@@ -161,16 +161,16 @@
 		TARGET_KEYUP: 'html',
 		// IE, Firefox, and Opera must use <html> to scroll
 		// Webkit must use <bod> to scroll
-		TARGET: (!$.browser.webkit)?'html':'body',
+		TARGET: (!jQuery.browser.webkit)?'html':'body',
 		/**
 		 * Initialization function
 		 * @param {Object} options Options
 		 */
 		init: function (options) {
-			var opts = $.extend($.extend({}, $.jknav.default_options), options);
-			$.jknav.index[opts.name] = null;
-			$.jknav.opts[opts.name] = opts;
-			$($.jknav.TARGET_KEYUP).keyup(function (e) {
+			var opts = jQuery.extend(jQuery.extend({}, jQuery.jknav.default_options), options);
+			jQuery.jknav.index[opts.name] = null;
+			jQuery.jknav.opts[opts.name] = opts;
+			jQuery(jQuery.jknav.TARGET_KEYUP).keyup(function (e) {
 				keyup(e, opts);
 				});
 			log('new set "' + opts.name + '" initialzed.');
@@ -180,7 +180,7 @@
 		 * @param {String} name name of set
 		 */
 		up: function (name) {
-			var opts = $.jknav.opts[name || 'default'];
+			var opts = jQuery.jknav.opts[name || 'default'];
 			keyup({target: {tagName: ''}, keyCode: opts.up.charCodeAt(0)}, opts);
 			},
 		/**
@@ -188,10 +188,9 @@
 		 * @param {String} name name of set
 		 */
 		down: function (name) {
-			var opts = $.jknav.opts[name || 'default'];
+			var opts = jQuery.jknav.opts[name || 'default'];
 			keyup({target: {tagName: ''}, keyCode: opts.down.charCodeAt(0)}, opts);
 			}
 		};
 	})(jQuery);
 // vim: ts=2: sw=2
-
