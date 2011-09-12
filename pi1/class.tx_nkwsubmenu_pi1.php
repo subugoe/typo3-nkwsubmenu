@@ -53,13 +53,13 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 
 			// Embed Javascript of this extension
-		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId. '-1'] = '<script type="text/javascript" src="/typo3conf/ext/nkwsubmenu/pi1/res/js/menu.js"></script>';
-		
+/*		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId. '-1'] = '<script type="text/javascript" src="/typo3conf/ext/nkwsubmenu/pi1/res/js/menu.js"></script>';
+
 			// Javascript der JK-Navigation einbinden
 		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId. '-2'] .= '<script type="text/javascript" src="/typo3conf/ext/nkwsubmenu/pi1/res/js/jknav.js"></script>';
 		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId. '-3'] .= '<script type="text/javascript" src="/typo3conf/ext/nkwsubmenu/pi1/res/js/hotkeys.js"></script>';
 			// Konfigurieren der JK-Navigation
-		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId. '-4'] .= '<script type="text/javascript" src="/typo3conf/ext/nkwsubmenu/pi1/res/js/jkrun.js"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId. '-4'] .= '<script type="text/javascript" src="/typo3conf/ext/nkwsubmenu/pi1/res/js/jkrun.js"></script>';*/
 
 			// page ID
 		$weAreHerePageId = $GLOBALS['TSFE']->id;
@@ -102,7 +102,7 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 
 				// we don't use the default language, so get the alternative page title
 			if ($lang > 0) {
-				$pages[$i1]['title'] = tx_nkwlib::formatString($this->getPageTitle($row1['uid'], $lang));
+				$pages[$i1]['title'] = tx_nkwlib::formatString(tx_nkwlib::getPageTitle($row1['uid'], $lang));
 			}
 			$pages[$i1]['tx_nkwsubmenu_in_menu'] = $row1['tx_nkwsubmenu_in_menu'];
 			$pages[$i1]['tx_nkwsubmenu_picture'] = $row1['tx_nkwsubmenu_picture'];
@@ -154,7 +154,7 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 				$pages[$i1]['child'][$i2]['uid'] = $row2['uid'];
 				$pages[$i1]['child'][$i2]['title'] = tx_nkwlib::formatString($row2['title']);
 				if ($lang > 0) {
-					$pages[$i1]['child'][$i2]['title'] = tx_nkwlib::formatString($this->getPageTitle($row2['uid'], $lang));
+					$pages[$i1]['child'][$i2]['title'] = tx_nkwlib::formatString(tx_nkwlib::getPageTitle($row2['uid'], $lang));
 				}
 				$pages[$i1]['child'][$i2]['tx_nkwsubmenu_picture'] = $row2['tx_nkwsubmenu_picture'];
 				$pages[$i1]['child'][$i2]['tx_nkwsubmenu_knotheader'] = $row2['tx_nkwsubmenu_knotheader'];
@@ -178,7 +178,7 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 				}
 
 					// selected
-				if ($row2['uid'] == $weAreHerePageId) {
+				if ($row2['uid'] === $weAreHerePageId) {
 					$pages[$i1]['selected'] = 2;
 					$pages[$i1]['child'][$i2]['selected'] = 1;
 				}
@@ -187,7 +187,7 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 				if ($row1['tx_nkwsubmenu_knot']) {
 					$pages[$i1]['child'][$i2]['inKnot'] = 1;
 				}
-				if ($row2['uid'] == $weAreHerePageId) {
+				if ($row2['uid'] === $weAreHerePageId) {
 					$pages[$i1]['hasActiveKnot'] = 1;
 				}
 
@@ -211,7 +211,7 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 					$pages[$i1]['child'][$i2]['child'][$i3]['title'] = tx_nkwlib::formatString($row3['title']);
 					if ($lang > 0) {
 						$pages[$i1]['child'][$i2]['child'][$i3]['title'] = tx_nkwlib::formatString(
-										$this->getPageTitle($row3['uid'], $lang));
+										tx_nkwlib::getPageTitle($row3['uid'], $lang));
 					}
 					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_picture'] = $row3['tx_nkwsubmenu_picture'];
 					$pages[$i1]['child'][$i2]['child'][$i3]['tx_nkwsubmenu_knotheader'] = $row3['tx_nkwsubmenu_knotheader'];
@@ -234,13 +234,13 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 						$pages[$i1]['child'][$i2]['hasKnot'] = 1;
 						$pages[$i1]['hasKnot'] = 1;
 					}
-					if ($row3['uid'] == $weAreHerePageId) {
+					if ($row3['uid'] === $weAreHerePageId) {
 						$pages[$i1]['child'][$i2]['hasActiveKnot'] = 1;
 						$pages[$i1]['hasActiveKnot'] = 1;
 					}
 
 						// selected
-					if ($row3['uid'] == $weAreHerePageId) {
+					if ($row3['uid'] === $weAreHerePageId) {
 						$pages[$i1]['selected'] = 3;
 						$pages[$i1]['child'][$i2]['selected'] = 2;
 						$pages[$i1]['child'][$i2]['child'][$i3]['selected'] = 1;
@@ -366,7 +366,7 @@ class tx_nkwsubmenu_pi1 extends tslib_pibase {
 				}
 			}
 		}
-			// remove pages who contain knots (not active), but don't show up in the menu
+			// remove pages which contain nodes (not active), but don't show up in the menu
 		if (!$knot) {
 			for ($i = 0; $i < $pagesSize; $i++)
 				if ($pages[$i]['tx_nkwsubmenu_in_menu'] == 1) {

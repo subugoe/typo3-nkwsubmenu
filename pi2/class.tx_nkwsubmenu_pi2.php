@@ -30,6 +30,9 @@
  * @package	TYPO3
  * @subpackage	tx_nkwsubmenu
  */
+
+require_once(t3lib_extMgm::extPath('nkwlib', 'class.tx_nkwlib.php'));
+
 class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 	public $prefixId = 'tx_nkwsubmenu_pi2';
@@ -87,25 +90,25 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		}
 		$contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
 
-                // insert pictures in side-menu via hook
+				// insert pictures in side-menu via hook
 		$contentPictures = '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('sideBarImages') . '</div>';
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
-                    $tmp = "";
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
-                        if ($userFunc) {
-                            t3lib_div::callUserFunction($userFunc, $tmp, $this);
-                        }
-                    }
-                    if ($tmp) {
-                        $contentPictures .= '<div id="tx-nkwsubmenu-pi2-imagelistframe">' . $tmp . '</div>';
-                        $contentPictures  = '<div id="tx-nkwsubmenu-pi2-imagelist">' . $contentPictures . '</div>';
-                    }   else    {
-                        $contentPictures = '';
-                    }
-                    unset($tmp);
-                }   else    {
-                    $contentPictures = '';
-                }
+				if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
+					$tmp = "";
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
+						if ($userFunc) {
+							t3lib_div::callUserFunction($userFunc, $tmp, $this);
+						}
+					}
+					if ($tmp) {
+						$contentPictures .= '<div id="tx-nkwsubmenu-pi2-imagelistframe">' . $tmp . '</div>';
+						$contentPictures  = '<div id="tx-nkwsubmenu-pi2-imagelist">' . $contentPictures . '</div>';
+					}   else	{
+						$contentPictures = '';
+					}
+					unset($tmp);
+				}   else	{
+					$contentPictures = '';
+				}
 
 			// get children
 		$children = tx_nkwlib::pageHasChild($weAreHerePageId);
