@@ -34,7 +34,7 @@
 	* Fix:  WWW-467 Anzeige von Unterseiten in der Infobox, obwohl diese auf "exclude from menu" gesetzt sind
 
 2010-11-25 - 0.0.42 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
-        * Fix: WWW-448 Anzeige von Seitenelementen nur aus der Hauptspalte in Infobox (Inhalte dieser Seite)
+	* Fix: WWW-448 Anzeige von Seitenelementen nur aus der Hauptspalte in Infobox (Inhalte dieser Seite)
 
 2010-11-23 - 0.0.41 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
 	* run: "UPDATE pages SET tx_nkwsubmenu_showsidebar = '1'"

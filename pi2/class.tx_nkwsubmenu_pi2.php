@@ -53,7 +53,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 			// $this->pi_USER_INT_obj = 1;
 		$this->pi_loadLL();
 			// basics
-		$weAreHerePageId = tx_nkwlib::getPageUid();
+		$weAreHerePageId = $GLOBALS['TSFE']->id;
 			// T3 hack
 		$saveAnchorTagParams = $GLOBALS['TSFE']->ATagParams;
 		$lang = tx_nkwlib::getLanguage();
