@@ -62,6 +62,8 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 			$id = $weAreHerePageId;
 		}
 
+		$contentContent = '';
+
 			// get page content
 		$pageContent = tx_nkwlib::pageContent($id, $lang);
 		$contentContent .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('contentOfThisSite') . '</div>';

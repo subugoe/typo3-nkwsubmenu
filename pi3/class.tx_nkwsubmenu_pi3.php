@@ -52,7 +52,7 @@ class tx_nkwsubmenu_pi3 extends tx_nkwlib {
 		// basics
 		$weAreHerePageID = $GLOBALS['TSFE']->id; // page ID
 		$saveATagParams = $GLOBALS['TSFE']->ATagParams; // T3 hack
-		$lang = $this->getLanguage();
+		$lang = tx_nkwlib::getLanguage();
 		$queryAdd = ' AND hidden = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0) . ' AND deleted = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(0);
 		$getKeyword = addslashes(htmlspecialchars(trim($this->piVars['keyword'])));
 		if ($getKeyword) {
