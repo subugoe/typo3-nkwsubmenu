@@ -49,7 +49,7 @@ class tx_nkwsubmenu_pi3 extends tx_nkwlib {
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		// basics
+			// basics
 		$weAreHerePageID = $GLOBALS['TSFE']->id; // page ID
 		$saveATagParams = $GLOBALS['TSFE']->ATagParams; // T3 hack
 		$lang = tx_nkwlib::getLanguage();
@@ -77,6 +77,7 @@ class tx_nkwsubmenu_pi3 extends tx_nkwlib {
 								$querySort,
 								'');
 			}
+			$tmp = '';
 			while ($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1)) {
 				$tmp .= '<li>' . $this->pi_LinkToPage($row1['title'], $row1['uid'], '', '') . '</li>';
 			}
@@ -86,7 +87,7 @@ class tx_nkwsubmenu_pi3 extends tx_nkwlib {
 				$content .= '<p>' . $this->pi_getLL('noHits') . $getKeyword . '</p>';
 			}
 		} else {
-			// get all keywords
+				// get all keywords
 			if ($lang > 0) {
 				$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 								'*',
@@ -104,19 +105,20 @@ class tx_nkwsubmenu_pi3 extends tx_nkwlib {
 								'',
 								'');
 			}
+			$keywords = '';
 			while ($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1)) {
 				$keywords .= ', ' . $row1['keywords'];
 			}
-			// make array, remove duplicates and sort alpha
+				// make array, remove duplicates and sort alpha
 			$keywords = explode(', ', $keywords);
 			$keywords = array_unique($keywords);
 			asort($keywords);
-			// arrange list
+				// arrange list
 			$tmpLetterArr = array();
 			foreach ($keywords AS $key => $value) {
 				if ($value) {
 					$letter = strtoupper($value{0});
-					// den Buchstaben haben wir noch nicht
+						// den Buchstaben haben wir noch nicht
 					if (!in_array($letter, $tmpLetterArr)) {
 						array_push($tmpLetterArr, $letter);
 						if (!$ulStart) {
@@ -139,17 +141,18 @@ class tx_nkwsubmenu_pi3 extends tx_nkwlib {
 			$tmp = $tmp;
 			// alpha list
 			$keywordsAlphaList = $this->alphaListFromArray($keywords);
+			$tmpKeywordsAlphaList = '';
 			foreach ($keywordsAlphaList AS $key => $value) {
 				$tmpKeywordsAlphaList .= '<a href="#' . $value . '">' . $value . '</a> | ';
 			}
 			$tmpKeywordsAlphaList = substr($tmpKeywordsAlphaList, 0, -3);
-			// output
+				// output
 			if ($tmp) {
 				$content = '<ul class="resetUlMargin">' . $tmpKeywordsAlphaList . '</ul>';
 				$content .= '<ul class="resetUlMargin">' . $tmp . '</ul>';
 			}
 		}
-		// return
+			// return
 		return $this->pi_wrapInBaseClass($content);
 	}
 
