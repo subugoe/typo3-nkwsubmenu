@@ -1,3 +1,6 @@
+2011-11-03 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+	* Auslesen der Headerbilder aus DAM (WWW-633)
+
 2011-11-02 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
 	* Bilddatentyp von BLOB auf text geaendert
 

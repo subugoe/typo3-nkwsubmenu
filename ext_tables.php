@@ -42,6 +42,16 @@ t3lib_extMgm::addPlugin(
 	array('LLL:EXT:nkwsubmenu/locallang_db.xml:tt_content.list_type_pi3', $_EXTKEY.'_pi3'), 
 	'list_type');
 t3lib_extMgm::addStaticFile($_EXTKEY, 'pi3/static/', 'Keywordlist');
+
+	// Bilder aus DAM holen
+$imageConfig = txdam_getMediaTCA('media_field', 'tx_nkwsubmenu_picture');
+$imageConfig['label'] = 'LLL:EXT:lang/locallang_general.xml:LGL.image';
+	// maximal ein bild ( nicht auf 0, sonst pflichtfeld )
+$imageConfig['config']['maxitems'] = '1';
+$imageConfig['config']['size'] = '1';
+$imageConfig['config']['allowed_types'] = 'gif,jpg,jpeg,tif,png,pdf,ai,swf';
+$imageConfig['config']['disallowed_types'] = null;
+
 $tempColumns = array(
 	'tx_nkwsubmenu_in_menu' => array(
 		'exclude' => 1, 
@@ -50,27 +60,13 @@ $tempColumns = array(
 			'type' => 'select', 
 			'items' => array(
 				array('LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.0', '0'),
-                array('LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.1', '1'),
-                array('LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.2', '2'),
-                array('LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.3', '3'),
+				array('LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.1', '1'),
+				array('LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.2', '2'),
+				array('LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_in_menu.I.3', '3'),
 			),
 		)
 	),
-	'tx_nkwsubmenu_picture' => array(
-		'exclude' => 1, 
-		'label' => 'LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_picture',
-		'config' => array(
-			'type' => 'group', 
-			'internal_type' => 'file', 
-			'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], 
-			'max_size' => 5000, 
-			'uploadfolder' => 'uploads/tx_nkwsubmenu', 
-			'show_thumbs' => 1, 
-			'size' => 1, 
-			'minitems' => 0, 
-			'maxitems' => 1
-		)
-	),
+	'tx_nkwsubmenu_picture' => $imageConfig,
 	'tx_nkwsubmenu_picture_follow' => array(
 		'exclude' => 1, 
 		'label' => 'LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_picture_follow', 
