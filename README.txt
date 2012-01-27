@@ -16,6 +16,13 @@ etc. in die Sidebar unter dem Punkt Inhaltsverzeichnis einfügen zu können.
 Es stehen dabei zwei Möglichkeiten zu Verfügung, entweder kann Inhalt an die
 bestehende Inhaltsliste angehängt oder diese durch Überschreiben komplett neu
 generiert werden.
+Neu dazu: Folgende Hooks sind nun nutzbar
+- Zur Erweiterung des Inhaltsverzeichnisses der Seite
+  $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC']
+- Zur Erweiterung des Menü-Bilder auf der Seite
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages']
+- Zur Erweiterung der 'Mehr auf diesen Seiten'-Section der Seite
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages']
 
 ====Funktionsweise====
 
@@ -48,14 +55,14 @@ Ein Beispiel für das Nutzen eines Hooks ist in der Extension patenschaften zu f
 In der ext_localconf.php der Extension muss zuerst eine entsprechende Zeile angehängt
 werden um die UserFunction in Typo3 zu registrieren.
 
-$TYPO3_CONF_VARS['EXTCONF']['nkwsubmenu']['extendTOC'][$_EXTKEY] = 'EXT:'.$_EXTKEY.'/pi1/class.tx_patenschaften_pi1.php:tx_patenschaften_pi1->hookFunc';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'][$_EXTKEY] = 'EXT:'.$_EXTKEY.'/pi1/class.tx_patenschaften_pi1.php:tx_patenschaften_pi1->hookFunc';
 
 
 Die UserFunction kann dann einfach in class.tx_patenschaften_pi1.php implementiert
 werden:
 
 # class.tx_patenschaften_pi1.php: line 294-343
-public function hookFunc(&$tmp, $obj) {
+public function hookFunc(&$tmp, &$obj) {
             ...
             $tmp .= '<li>';
             $tmp .= $obj->pi_linkTP($object->pi_getLL('infobox_previousbook'), array('tx_patenschaften_pi1[showBook]' => $books[$id-1]['uid']), 1);

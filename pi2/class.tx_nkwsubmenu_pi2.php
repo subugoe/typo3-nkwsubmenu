@@ -115,11 +115,19 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 			// get children
 		$children = tx_nkwlib::pageHasChild($weAreHerePageId, $lang);
 		$recurs = 	$this->pi_getPidList($weAreHerePageId,$recursive=1);
-		if ($children) {
+		if ($children || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'])) {
 			foreach ($children AS $key => $value) {
 					$tmp .= '<li>' . $i;
 					$tmp .= $this->pi_LinkToPage(tx_nkwlib::formatString($value['title']), $value['uid'], '', '');
 					$tmp .= '</li>';
+			}
+				// hook to extend MoreOnThesePages (add new sublinks etc.)
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'] as $userFunc) {
+					if ($userFunc) {
+						t3lib_div::callUserFunction($userFunc, $tmp, $this);
+					}
+				}
 			}
 			if ($tmp) {
 				$contentChildren .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') . '</div>';
