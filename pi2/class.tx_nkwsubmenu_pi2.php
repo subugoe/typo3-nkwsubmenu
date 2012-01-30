@@ -129,12 +129,12 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 					}
 				}
 			}
-			if ($tmp) {
+			if (trim($tmp)) {
 				$contentChildren .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') . '</div>';
 				$contentChildren .= '<ul>' . $tmp . '</ul>';
+				$contentChildren = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
 			}
 			unset($tmp);
-			$contentChildren = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
 		}
 
 			// keywords
