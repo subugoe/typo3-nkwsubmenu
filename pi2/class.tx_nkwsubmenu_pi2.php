@@ -95,7 +95,6 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 				// insert pictures in side-menu via hook
 		$contentPictures = '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('sideBarImages') . '</div>';
 				if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
-					$tmp = "";
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
 						if ($userFunc) {
 							t3lib_div::callUserFunction($userFunc, $tmp, $this);
@@ -116,23 +115,26 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		$children = tx_nkwlib::pageHasChild($weAreHerePageId, $lang);
 		$recurs = 	$this->pi_getPidList($weAreHerePageId,$recursive=1);
 		if ($children || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'])) {
-			foreach ($children AS $key => $value) {
-					$tmp .= '<li>' . $i;
-					$tmp .= $this->pi_LinkToPage(tx_nkwlib::formatString($value['title']), $value['uid'], '', '');
-					$tmp .= '</li>';
+			if($children)	{
+				foreach ($children AS $key => $value) {
+						$tmp .= '<li>' . $i;
+						$tmp .= $this->pi_LinkToPage(tx_nkwlib::formatString($value['title']), $value['uid'], '', '');
+						$tmp .= '</li>';
+				}
 			}
 				// hook to extend MoreOnThesePages (add new sublinks etc.)
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'] as $userFunc) {
 					if ($userFunc) {
 						t3lib_div::callUserFunction($userFunc, $tmp, $this);
+						$tmp = trim($tmp);
 					}
 				}
 			}
-			if (trim($tmp)) {
+			if ($tmp) {
 				$contentChildren .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') . '</div>';
-				$contentChildren .= '<ul>' . $tmp . '</ul>';
-				$contentChildren = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
+				$contentChildren .= '<ul>' . trim($tmp) . '</ul>';
+				$contentChildren  = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
 			}
 			unset($tmp);
 		}
