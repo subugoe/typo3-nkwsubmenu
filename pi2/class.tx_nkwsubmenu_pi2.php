@@ -50,11 +50,11 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 	public function main($content, $conf) {
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
-			// $this->pi_USER_INT_obj = 1;
+		// $this->pi_USER_INT_obj = 1;
 		$this->pi_loadLL();
-			// basics
+		// basics
 		$weAreHerePageId = $GLOBALS['TSFE']->id;
-			// T3 hack
+		// T3 hack
 		$saveAnchorTagParams = $GLOBALS['TSFE']->ATagParams;
 		$lang = tx_nkwlib::getLanguage();
 		$id = tx_nkwlib::checkForAlienContent($weAreHerePageId);
@@ -64,7 +64,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 		$contentContent = '';
 
-			// get page content
+		// get page content
 		$pageContent = tx_nkwlib::pageContent($id, $lang);
 		$contentContent .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('contentOfThisSite') . '</div>';
 		if ($pageContent) {
@@ -75,7 +75,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 					$tmp .= '</li>';
 				}
 			}
-				// hook to extend table of contents (add anchors etc.)
+			// hook to extend table of contents (add anchors etc.)
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'] as $userFunc) {
 					if ($userFunc) {
@@ -92,37 +92,37 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		}
 		$contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
 
-				// insert pictures in side-menu via hook
+		// insert pictures in side-menu via hook
 		$contentPictures = '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('sideBarImages') . '</div>';
-				if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
-					foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
-						if ($userFunc) {
-							t3lib_div::callUserFunction($userFunc, $tmp, $this);
-						}
-					}
-					if ($tmp) {
-						$contentPictures .= '<div id="tx-nkwsubmenu-pi2-imagelistframe">' . $tmp . '</div>';
-						$contentPictures  = '<div id="tx-nkwsubmenu-pi2-imagelist">' . $contentPictures . '</div>';
-					}   else	{
-						$contentPictures = '';
-					}
-					unset($tmp);
-				}   else	{
-					$contentPictures = '';
-				}
-
-			// get children
-		$children = tx_nkwlib::pageHasChild($weAreHerePageId, $lang);
-		$recurs = 	$this->pi_getPidList($weAreHerePageId,$recursive=1);
-		if ($children || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'])) {
-			if($children)	{
-				foreach ($children AS $key => $value) {
-						$tmp .= '<li>' . $i;
-						$tmp .= $this->pi_LinkToPage(tx_nkwlib::formatString($value['title']), $value['uid'], '', '');
-						$tmp .= '</li>';
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
+				if ($userFunc) {
+					t3lib_div::callUserFunction($userFunc, $tmp, $this);
 				}
 			}
-				// hook to extend MoreOnThesePages (add new sublinks etc.)
+			if ($tmp) {
+				$contentPictures .= '<div id="tx-nkwsubmenu-pi2-imagelistframe">' . $tmp . '</div>';
+				$contentPictures = '<div id="tx-nkwsubmenu-pi2-imagelist">' . $contentPictures . '</div>';
+			} else {
+				$contentPictures = '';
+			}
+			unset($tmp);
+		} else {
+			$contentPictures = '';
+		}
+
+		// get children
+		$children = $this->pageHasChild($weAreHerePageId, $lang);
+		$recurs = $this->pi_getPidList($weAreHerePageId, $recursive = 1);
+		if ($children || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'])) {
+			if ($children) {
+				foreach ($children AS $key => $value) {
+					$tmp .= '<li>' . $i;
+					$tmp .= $this->pi_LinkToPage(tx_nkwlib::formatString($value['title']), $value['uid'], '', '');
+					$tmp .= '</li>';
+				}
+			}
+			// hook to extend MoreOnThesePages (add new sublinks etc.)
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'] as $userFunc) {
 					if ($userFunc) {
@@ -134,12 +134,12 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 			if ($tmp) {
 				$contentChildren .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') . '</div>';
 				$contentChildren .= '<ul>' . trim($tmp) . '</ul>';
-				$contentChildren  = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
+				$contentChildren = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
 			}
 			unset($tmp);
 		}
 
-			// keywords
+		// keywords
 		$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
 		$contentKeywords .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('keywordsOfThisSite') . '</div>';
 		$contentKeywords .= '<ul>';
@@ -147,10 +147,56 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		$contentKeywords .= '</ul>';
 		$contentKeywords .= '</div>';
 
-			// collect
-		$content = $contentChildren . $contentContent . $contentPictures .  $contentKeywords;
-			// return
+		// collect
+		$content = $contentChildren . $contentContent . $contentPictures . $contentKeywords;
+		// return
 		return $this->pi_wrapInBaseClass($content);
+	}
+
+	/**
+	 * Checks if a page has child records
+	 *
+	 * @param int $id
+	 * @param int $lang
+	 * @todo Should maybe only return true or false and not false or Array
+	 * @return <boolean or Array>
+	 */
+	protected function pageHasChild($id, $lang = 0) {
+		$i = 0;
+		$arr = array();
+		if ($lang >= 1) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'*',
+				'pages LEFT JOIN pages_language_overlay ON pages.uid = pages_language_overlay.pid',
+					'pages.pid = ' . $id . ' AND pages.deleted = 0 AND pages.hidden = 0 AND t3ver_wsid = 0 ANDsys_language_uid = ' . $lang,
+				'',
+				'pages.sorting ASC',
+				'');
+		} else {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'*',
+				'pages',
+					'pid = ' . $id . ' AND deleted = 0 AND hidden = 0 AND t3ver_wsid = 0 ',
+				'',
+				'sorting ASC',
+				'');
+		}
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			if ($lang > 0) {
+				$arr[$i]['uid'] = $row['pid'];
+			} else {
+				$arr[$i]['uid'] = $row['uid'];
+			}
+			$arr[$i]['title'] = $row['title'];
+			$arr[$i]['tx_nkwsubmenu_in_menu'] = $row['tx_nkwsubmenu_in_menu'];
+			$i++;
+		}
+		if ($i > 0) {
+			$return = $arr;
+		} else {
+			$return = FALSE;
+		}
+		return $return;
 	}
 
 }
