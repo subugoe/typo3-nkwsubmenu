@@ -168,7 +168,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'pages LEFT JOIN pages_language_overlay ON pages.uid = pages_language_overlay.pid',
-					'pages.pid = ' . $id . ' AND pages.deleted = 0 AND pages.hidden = 0 AND t3ver_wsid = 0 ANDsys_language_uid = ' . $lang,
+					'pages.pid = ' . $id . ' AND pages.deleted = 0 AND pages.hidden = 0 AND pages.t3ver_wsid = 0 AND sys_language_uid = ' . $lang,
 				'',
 				'pages.sorting ASC',
 				'');
