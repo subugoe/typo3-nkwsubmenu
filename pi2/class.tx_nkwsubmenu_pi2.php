@@ -66,7 +66,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 		// get page content
 		$pageContent = tx_nkwlib::pageContent($id, $lang);
-		$contentContent .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('contentOfThisSite') . '</div>';
+		$contentContent .= '<h6>' . $this->pi_getLL('contentOfThisSite') . '</h6>';
 		if ($pageContent) {
 			foreach ($pageContent AS $key => $value) {
 				if ($value['colPos'] == 0) {
@@ -93,7 +93,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		$contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
 
 		// insert pictures in side-menu via hook
-		$contentPictures = '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('sideBarImages') . '</div>';
+		$contentPictures = '<h6>' . $this->pi_getLL('sideBarImages') . '</h6>';
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
 				if ($userFunc) {
@@ -132,7 +132,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 				}
 			}
 			if ($tmp) {
-				$contentChildren .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('subpages') . '</div>';
+				$contentChildren .= '<h6>' . $this->pi_getLL('subpages') . '</h6>';
 				$contentChildren .= '<ul>' . trim($tmp) . '</ul>';
 				$contentChildren = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
 			}
@@ -141,7 +141,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 		// keywords
 		$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
-		$contentKeywords .= '<div class="tx-nkwsubmenu-pi2-header">' . $this->pi_getLL('keywordsOfThisSite') . '</div>';
+		$contentKeywords .= '<div class="h6>' . $this->pi_getLL('keywordsOfThisSite') . '</h6>';
 		$contentKeywords .= '<ul>';
 		$contentKeywords .= tx_nkwlib::keywordsForPage($weAreHerePageId, $lang, 'infobox', $conf['landing']);
 		$contentKeywords .= '</ul>';
