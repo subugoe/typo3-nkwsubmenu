@@ -141,7 +141,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 		// keywords
 		$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
-		$contentKeywords .= '<div class="h6>' . $this->pi_getLL('keywordsOfThisSite') . '</h6>';
+		$contentKeywords .= '<h6>' . $this->pi_getLL('keywordsOfThisSite') . '</h6>';
 		$contentKeywords .= '<ul>';
 		$contentKeywords .= tx_nkwlib::keywordsForPage($weAreHerePageId, $lang, 'infobox', $conf['landing']);
 		$contentKeywords .= '</ul>';
