@@ -25,23 +25,12 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 t3lib_div::loadTCA('tt_content');
-$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1'] = 'layout,select_key,pages';
-t3lib_extMgm::addPlugin(
-	array('LLL:EXT:nkwsubmenu/locallang_db.xml:tt_content.list_type_pi1', $_EXTKEY . '_pi1'), 
-	'list_type');
-t3lib_extMgm::addStaticFile($_EXTKEY, 'pi1/static/', 'SUB Menu');
-t3lib_div::loadTCA('tt_content');
+
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi2'] = 'layout,select_key,pages';
 t3lib_extMgm::addPlugin(
 	array('LLL:EXT:nkwsubmenu/locallang_db.xml:tt_content.list_type_pi2', $_EXTKEY . '_pi2'),
 	'list_type');
 t3lib_extMgm::addStaticFile($_EXTKEY, 'pi2/static/', 'SUB Infobox');
-t3lib_div::loadTCA('tt_content');
-$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi3'] = 'layout,select_key';
-t3lib_extMgm::addPlugin(
-	array('LLL:EXT:nkwsubmenu/locallang_db.xml:tt_content.list_type_pi3', $_EXTKEY.'_pi3'), 
-	'list_type');
-t3lib_extMgm::addStaticFile($_EXTKEY, 'pi3/static/', 'Keywordlist');
 
 	// Bilder aus DAM holen
 $imageConfig = txdam_getMediaTCA('media_field', 'tx_nkwsubmenu_picture');
@@ -80,11 +69,6 @@ $tempColumns = array(
 	'tx_nkwsubmenu_knot' => array(
 		'exclude' => 1, 
 		'label' => 'LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_knot', 
-		'config' => array('type' => 'check')
-	),
-	'tx_nkwsubmenu_usecontent' => array(
-		'exclude' => 1, 
-		'label' => 'LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_usecontent', 
 		'config' => array('type' => 'check')
 	),
 	'tx_nkwsubmenu_showsidebar' => array(

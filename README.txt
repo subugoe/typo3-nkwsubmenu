@@ -1,9 +1,5 @@
 =SUBMENU=
 
-==PI1==
-
-Plugin 'SUB Menu' for the 'nkwsubmenu' extension.
-
 ==PI2==
 
 Plugin 'Infobox' for the 'nkwsubmenu' extension.
@@ -70,7 +66,3 @@ public function hookFunc(&$tmp, &$obj) {
         }
     }
 }
-
-==PI3==
-
-Plugin 'Keyword List' for the 'nkwsubmenu' extension.

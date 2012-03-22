@@ -1,3 +1,6 @@
+2012-03-22 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+	* Keine Anzeige der per Zeitschaltuhr ausgeschalteten Elemente (WWW-1151)
+
 2012-02-15 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
 	* Keine Anzeige der Seiten aus dem Workspace in der Unterseitenliste (WWW-1127)
 
