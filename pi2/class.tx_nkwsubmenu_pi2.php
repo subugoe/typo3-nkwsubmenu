@@ -141,7 +141,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
 		$contentKeywords .= '<h6>' . $this->pi_getLL('keywordsOfThisSite') . '</h6>';
 		$contentKeywords .= '<ul>';
-		$contentKeywords .= self::keywordsForPage($weAreHerePageId, 'infobox', $conf['landing']);
+		$contentKeywords .= self::keywordsForPage($weAreHerePageId, $conf['landing']);
 		$contentKeywords .= '</ul>';
 		$contentKeywords .= '</div>';
 
@@ -231,20 +231,19 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 	 * @param boolean $landingpage
 	 * @return string
 	 */
-	protected function keywordsForPage($id, $mode = FALSE, $landingpage = FALSE) {
+	protected function keywordsForPage($id, $landingpage = FALSE) {
 
 		$cObj = t3lib_div::makeInstance('tslib_cObj');
 
 		$pageInfo = tx_nkwlib::pageInfo($id, $GLOBALS['TSFE']->sys_language_uid);
 		if (!empty($pageInfo['tx_nkwkeywords_keywords'])) {
-			if ($mode == 'infobox') {
 				$tmp = explode(',', $pageInfo['tx_nkwkeywords_keywords']);
 				foreach ($tmp AS $key => $value) {
 					$value = intval($value);
 
 					$select = '*';
 					$table = 'tx_nkwkeywords_keywords';
-					$where = '(sys_language_uid IN (-1,0) OR (sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . ' AND l18n_parent = 0)) AND uid = ' . $value;
+					$where = '(sys_language_uid IN (-1,0) OR (sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . ')) AND uid = ' . $value;
 					$where .= $GLOBALS['TSFE']->sys_page->enableFields($table);
 					$order = '';
 					$group = '';
@@ -262,18 +261,22 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 						$str .= '<li>';
 
 						$cObj->typoLink(
-							$row['title'],
+							$row['title' . $langString],
 							array(
 								'parameter' => $link_uid,
 								'useCacheHash' => TRUE,
 								'additionalParams' => '&tx_nkwkeywords[id]=' . $value
 							)
 						);
-						$str .= '<a title="' . $row['title'] . '" href="' . $cObj->lastTypoLinkUrl . '">' . $row['title'] . '</a>';
+						if ($this->lang === 0) {
+							$langString = '_de';
+							} else {
+								$langString = '_en';
+								}
+						$str .= '<a title="' . $row['title' . $langString] . '" href="' . $cObj->lastTypoLinkUrl . '">' . $row['title' . $langString] . '</a>';
 						$str .= '</li>';
 					}
 				}
-			}
 		}
 		return $str;
 	}
