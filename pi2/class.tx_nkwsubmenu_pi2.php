@@ -243,7 +243,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 					$value = intval($value);
 
 					$select = '*';
-					$table = 'tx_nkwkeywords_domain_model_keywords';
+					$table = 'tx_nkwkeywords_keywords';
 					$where = '(sys_language_uid IN (-1,0) OR (sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . ' AND l18n_parent = 0)) AND uid = ' . $value;
 					$where .= $GLOBALS['TSFE']->sys_page->enableFields($table);
 					$order = '';
