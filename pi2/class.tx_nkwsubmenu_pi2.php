@@ -141,7 +141,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
 		$contentKeywords .= '<h6>' . $this->pi_getLL('keywordsOfThisSite') . '</h6>';
 		$contentKeywords .= '<ul>';
-		$contentKeywords .= self::keywordsForPage($weAreHerePageId, $conf['landing']);
+		$contentKeywords .= self::keywordsForPage($weAreHerePageId, $this->conf['landing']);
 		$contentKeywords .= '</ul>';
 		$contentKeywords .= '</div>';
 
@@ -243,8 +243,8 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 				$select = '*';
 				$table = 'tx_nkwkeywords_keywords';
-				$where = '(sys_language_uid IN (-1,0) OR (sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . ')) AND uid = ' . $value;
-				$where .= $GLOBALS['TSFE']->sys_page->enableFields($table);
+			//	$where = '(sys_language_uid IN (-1,0) OR (sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . ')) AND uid = ' . $value;
+				$where = $GLOBALS['TSFE']->sys_page->enableFields($table);
 				$order = '';
 				$group = '';
 				$limit = '';

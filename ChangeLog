@@ -1,3 +1,6 @@
+2012-03-17 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+	* Fix fuer die Verlinkung der Schlagwoerter (WWW-1187)
+
 2012-03-22 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
 	* Keine Anzeige der per Zeitschaltuhr ausgeschalteten Elemente (WWW-1151)
 
