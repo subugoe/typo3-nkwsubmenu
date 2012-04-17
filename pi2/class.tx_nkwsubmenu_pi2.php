@@ -243,8 +243,8 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 				$select = '*';
 				$table = 'tx_nkwkeywords_keywords';
-			//	$where = '(sys_language_uid IN (-1,0) OR (sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . ')) AND uid = ' . $value;
-				$where = $GLOBALS['TSFE']->sys_page->enableFields($table);
+				$where = 'uid = ' . $value;
+				$where .= $GLOBALS['TSFE']->sys_page->enableFields($table);
 				$order = '';
 				$group = '';
 				$limit = '';
@@ -252,12 +252,8 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
-					if (is_array($row) && $row['sys_language_uid'] != $GLOBALS['TSFE']->sys_language_content && $GLOBALS['TSFE']->sys_language_contentOL) {
-						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($table, $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
-					}
-					if ($row) {
-						$link_uid = ($row['_LOCALIZED_UID']) ? $row['_LOCALIZED_UID'] : $row['uid'];
-					}
+					$link_uid = $row['uid'];
+					
 					$str .= '<li>';
 
 					if ($this->lang === 0) {
@@ -268,9 +264,9 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 					$cObj->typoLink(
 						$row['title' . $langString],
 						array(
-							'parameter' => $link_uid,
+							'parameter' => $landingpage,
 							'useCacheHash' => TRUE,
-							'additionalParams' => '&tx_nkwkeywords[id]=' . $value
+							'additionalParams' => '&tx_nkwkeywords[id]=' . $row['uid']
 						)
 					);
 					$str .= '<a title="' . $row['title' . $langString] . '" href="' . $cObj->lastTypoLinkUrl . '">' . $row['title' . $langString] . '</a>';
