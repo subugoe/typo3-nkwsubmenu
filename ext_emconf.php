@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'SUB Menu',
-	'description' => 'Menues der SUB Webseiten',
+	'description' => 'Infobox der SUB Webseiten',
 	'category' => 'plugin',
 	'author' => 'Nils K. Windisch',
 	'author_email' => 'windisch@sub.uni-goettingen.de',

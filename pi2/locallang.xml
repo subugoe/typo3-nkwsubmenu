@@ -9,16 +9,13 @@
 			<label index="keywordsOfThisSite">Keywords</label>
 			<label index="contentOfThisSite">Contents</label>
 			<label index="noContentOfThisSite">We regret that this page is not available in English.</label>
-			<label index="subpages">More on these pages</label>
 			<label index="noSubpages">This page has no subpages.</label>
 			<label index="sideBarImages">Pictures</label>
-
-                </languageKey>
+		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="keywordsOfThisSite">Schlagwörter</label>
 			<label index="contentOfThisSite">Inhaltsverzeichnis</label>
 			<label index="noContentOfThisSite">Dieser Seite hat noch keinen Inhalt</label>
-			<label index="subpages">Mehr auf diesen Seiten</label>
 			<label index="noSubpages">Diese Seite hat keine Unterseiten.</label>
 			<label index="sideBarImages">Bilder</label>
 		</languageKey>

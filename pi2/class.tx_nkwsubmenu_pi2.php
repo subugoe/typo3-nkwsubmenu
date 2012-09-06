@@ -62,7 +62,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 		$contentContent = '';
 
-		// get page content
+			// get page content
 		$pageContent = self::pageContent($id);
 		$contentContent .= '<h6>' . $this->pi_getLL('contentOfThisSite') . '</h6>';
 		if ($pageContent) {
@@ -73,7 +73,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 					$tmp .= '</li>';
 				}
 			}
-			// hook to extend table of contents (add anchors etc.)
+				// hook to extend table of contents (add anchors etc.)
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'] as $userFunc) {
 					if ($userFunc) {
@@ -90,7 +90,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		}
 		$contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
 
-		// insert pictures in side-menu via hook
+			// insert pictures in side-menu via hook
 		$contentPictures = '<h6>' . $this->pi_getLL('sideBarImages') . '</h6>';
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
@@ -109,35 +109,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 			$contentPictures = '';
 		}
 
-		// get children
-		$children = $this->pageHasChild($weAreHerePageId);
-		$recurs = $this->pi_getPidList($weAreHerePageId, $recursive = 1);
-		if ($children || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'])) {
-			if ($children) {
-				foreach ($children AS $key => $value) {
-					$tmp .= '<li>' . $i;
-					$tmp .= $this->pi_LinkToPage($value['title'], $value['uid'], '', '');
-					$tmp .= '</li>';
-				}
-			}
-			// hook to extend MoreOnThesePages (add new sublinks etc.)
-			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'])) {
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'] as $userFunc) {
-					if ($userFunc) {
-						t3lib_div::callUserFunction($userFunc, $tmp, $this);
-						$tmp = trim($tmp);
-					}
-				}
-			}
-			if ($tmp) {
-				$contentChildren .= '<h6>' . $this->pi_getLL('subpages') . '</h6>';
-				$contentChildren .= '<ul>' . trim($tmp) . '</ul>';
-				$contentChildren = '<div id="tx-nkwsubmenu-pi2-subpagelist">' . $contentChildren . '</div>';
-			}
-			unset($tmp);
-		}
-
-		// keywords
+			// keywords
 		$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
 		$contentKeywords .= '<h6>' . $this->pi_getLL('keywordsOfThisSite') . '</h6>';
 		$contentKeywords .= '<ul>';
@@ -145,54 +117,10 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		$contentKeywords .= '</ul>';
 		$contentKeywords .= '</div>';
 
-		// collect
-		$content = $contentChildren . $contentContent . $contentPictures . $contentKeywords;
-		// return
+			// collect
+		$content = $contentContent . $contentPictures . $contentKeywords;
+			// return
 		return $this->pi_wrapInBaseClass($content);
-	}
-
-	/**
-	 * Checks if a page has child records
-	 *
-	 * @param int $id
-	 * @return mixed
-	 */
-	protected function pageHasChild($id) {
-		$i = 0;
-		$arr = array();
-		if ($this->lang >= 1) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'*',
-				'pages LEFT JOIN pages_language_overlay ON pages.uid = pages_language_overlay.pid',
-					'pages.pid = ' . $id . $this->cObj->enableFields('pages') . ' AND sys_language_uid = ' . $this->lang,
-				'',
-				'pages.sorting ASC',
-				'');
-		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'*',
-				'pages',
-					'pid = ' . $id . $this->cObj->enableFields('pages'),
-				'',
-				'sorting ASC',
-				'');
-		}
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			if ($this->lang > 0) {
-				$arr[$i]['uid'] = $row['pid'];
-			} else {
-				$arr[$i]['uid'] = $row['uid'];
-			}
-			$arr[$i]['title'] = $row['title'];
-			$arr[$i]['tx_nkwsubmenu_in_menu'] = $row['tx_nkwsubmenu_in_menu'];
-			$i++;
-		}
-		if ($i > 0) {
-			$return = $arr;
-		} else {
-			$return = FALSE;
-		}
-		return $return;
 	}
 
 	/**
@@ -203,12 +131,10 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 	 */
 	protected function checkForAlienContent($id) {
 
-		$return = '';
-
 		$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, content_from_pid',
 			'pages',
-				'uid = ' . $id . $this->cObj->enableFields('pages'),
+			'uid = ' . $id . $this->cObj->enableFields('pages'),
 			'',
 			'',
 			'');
@@ -227,51 +153,46 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 	 * Get Keywords for a page
 	 *
 	 * @param int $id
-	 * @param boolean $mode
 	 * @param boolean $landingpage
 	 * @return string
 	 */
 	protected function keywordsForPage($id, $landingpage = FALSE) {
 
 		$cObj = t3lib_div::makeInstance('tslib_cObj');
+		$pageInfo = t3lib_BEfunc::getRecord('pages', $id);
+				
+		if (!empty($pageInfo['keywords'])) {
 
-		$pageInfo = self::pageInfo($id, $GLOBALS['TSFE']->sys_language_uid);
-		if (!empty($pageInfo['tx_nkwkeywords_keywords'])) {
-			$tmp = explode(',', $pageInfo['tx_nkwkeywords_keywords']);
-			foreach ($tmp AS $key => $value) {
-				$value = intval($value);
+			$select = '*';
+			$local_table = 'pages';
+			$mm_table = 'tx_nkwkeywords_pages_keywords_mm';
+			$foreign_table = 'tx_nkwkeywords_domain_model_keywords';
+			$whereClause = ' AND ' . $local_table . '.uid = ' . $id;
+			$whereClause .= $GLOBALS['TSFE']->sys_page->enableFields($local_table);
 
-				$select = '*';
-				$table = 'tx_nkwkeywords_keywords';
-				$where = 'uid = ' . $value;
-				$where .= $GLOBALS['TSFE']->sys_page->enableFields($table);
-				$order = '';
-				$group = '';
-				$limit = '';
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where, $group, $order, $limit);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query (
+			 	$select,
+				$local_table,
+				$mm_table,
+				$foreign_table,
+				$whereClause
+			);
 
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$str = '';
 
-					$link_uid = $row['uid'];
-					
-					$str .= '<li>';
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
-					if ($this->lang === 0) {
-						$langString = '_de';
-					} else {
-						$langString = '_en';
-					}
-					$cObj->typoLink(
-						$row['title' . $langString],
-						array(
-							'parameter' => $landingpage,
-							'useCacheHash' => TRUE,
-							'additionalParams' => '&tx_nkwkeywords[id]=' . $row['uid']
-						)
-					);
-					$str .= '<a title="' . $row['title' . $langString] . '" href="' . $cObj->lastTypoLinkUrl . '">' . $row['title' . $langString] . '</a>';
-					$str .= '</li>';
-				}
+				$str .= '<li>';
+				$cObj->typoLink(
+					$row['title'],
+					array(
+						'parameter' => $landingpage,
+						'useCacheHash' => TRUE,
+						'additionalParams' => '&tx_nkwkeywords[id]=' . $row['uid']
+					)
+				);
+				$str .= '<a title="' . $row['title'] . '" href="' . $cObj->lastTypoLinkUrl . '">' . $row['title'] . '</a>';
+				$str .= '</li>';
 			}
 		}
 		return $str;
@@ -288,14 +209,12 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 	protected function pageContent($id) {
 		$i = 0;
 		$arr = array();
-		$return = '';
-
 		$id = intval($id);
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, header, colPos',
 			'tt_content',
-				'pid = ' . $id . ' AND sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
+			'pid = ' . $id . ' AND sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
 			'',
 			'sorting ASC',
 			''
@@ -314,56 +233,6 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		}
 		return $return;
 	}
-
-	/**
-	 * Get page informations about uid, pid, title, keywords, ...
-	 *
-	 * @param int $id
-	 * @param mixed $lang
-	 * @return array
-	 */
-	protected function pageInfo($id) {
-		$id = intval($id);
-		if ($this->lang > 0) {
-			$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'*',
-				'pages_language_overlay',
-					'pid = ' . $id . $GLOBALS['TSFE']->sys_page->enableFields('pages_language_overlay'),
-				'',
-				'',
-				'');
-		} else {
-			$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'*',
-				'pages',
-					'uid = ' . $id . $GLOBALS['TSFE']->sys_page->enableFields('pages'),
-				'',
-				'',
-				'');
-		}
-		while ($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1)) {
-			$pageInfo['uid'] = $row1['uid'];
-			$pageInfo['pid'] = $row1['pid'];
-			$pageInfo['title'] = $row1['title'];
-			$pageInfo['keywords'] = $row1['keywords'];
-			$pageInfo['tx_nkwsubmenu_knot'] = $row1['tx_nkwsubmenu_knot'];
-			$pageInfo['tx_nkwkeywords_keywords'] = $row1['tx_nkwkeywords_keywords'];
-		}
-		if ($this->lang > 0) {
-			$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'tx_nkwkeywords_keywords',
-				'pages',
-					'uid = ' . $pageInfo['pid'] . $GLOBALS['TSFE']->sys_page->enableFields('tx_nkwkeywords_keywords'),
-				'',
-				'',
-				'');
-			while ($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1)) {
-				$pageInfo['tx_nkwkeywords_keywords'] = $row1['tx_nkwkeywords_keywords'];
-			}
-		}
-		return $pageInfo;
-	}
-
 
 }
 
