@@ -110,13 +110,19 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		}
 
 			// keywords
-		$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
-		$contentKeywords .= '<h6>' . $this->pi_getLL('keywordsOfThisSite') . '</h6>';
-		$contentKeywords .= '<ul>';
-		$contentKeywords .= self::keywordsForPage($weAreHerePageId, $this->conf['landing']);
-		$contentKeywords .= '</ul>';
-		$contentKeywords .= '</div>';
 
+		$keywords = self::keywordsForPage($weAreHerePageId, $this->conf['landing']);
+
+		if ($keywords) {
+			$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
+			$contentKeywords .= '<h6>' . $this->pi_getLL('keywordsOfThisSite') . '</h6>';
+			$contentKeywords .= '<ul>';
+			$contentKeywords .= $keywords;
+			$contentKeywords .= '</ul>';
+			$contentKeywords .= '</div>';
+		} else {
+			$contentKeywords = '';
+		}
 			// collect
 		$content = $contentContent . $contentPictures . $contentKeywords;
 			// return
@@ -160,8 +166,9 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 		$cObj = t3lib_div::makeInstance('tslib_cObj');
 		$pageInfo = t3lib_BEfunc::getRecord('pages', $id);
-				
-		if (!empty($pageInfo['keywords'])) {
+		$str = NULL;
+
+		if ($pageInfo['keywords']) {
 
 			$select = '*';
 			$local_table = 'pages';
@@ -178,8 +185,6 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 				$whereClause
 			);
 
-			$str = '';
-
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
 				$str .= '<li>';
@@ -188,7 +193,7 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 					array(
 						'parameter' => $landingpage,
 						'useCacheHash' => TRUE,
-						'additionalParams' => '&tx_nkwkeywords[id]=' . $row['uid']
+						'additionalParams' => '&tx_nkwkeywords_keyword[keyword]=' . $row['uid']
 					)
 				);
 				$str .= '<a title="' . $row['title'] . '" href="' . $cObj->lastTypoLinkUrl . '">' . $row['title'] . '</a>';

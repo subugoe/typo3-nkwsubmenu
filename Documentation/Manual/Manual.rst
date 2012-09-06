@@ -2,13 +2,11 @@
 SUBMENU
 #######
 
-***
 PI2
 ***
 
 Plugin 'Infobox' for the 'nkwsubmenu' extension.
 
-====
 HOOK
 ====
 
@@ -25,7 +23,6 @@ Neu dazu: Folgende Hooks sind nun nutzbar
 * Zur Erweiterung des Menü-Bilder auf der Seite $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages']
 * Zur Erweiterung der 'Mehr auf diesen Seiten'-Section der Seite $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages']
 
---------------
 Funktionsweise
 --------------
 
@@ -54,7 +51,6 @@ Klassen-Instanz mit an die UserFunction übergeben.
 			$contentContent .= '<ul>'. $tmp . '</ul>';
 	}
 
---------
 Beispiel
 --------
 
