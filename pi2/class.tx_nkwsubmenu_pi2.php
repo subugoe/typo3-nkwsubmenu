@@ -48,11 +48,6 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	protected $lang;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\View\StandaloneView
-	 */
-	protected $template;
-
-	/**
 	 * The main method of the PlugIn
 	 *
 	 * @param string $content The PlugIn content
@@ -64,8 +59,6 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-
-		$this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
 		// basics
 		$weAreHerePageId = $GLOBALS['TSFE']->id;
