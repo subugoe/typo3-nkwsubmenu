@@ -45,41 +45,6 @@ $tempColumns = array(
 						),
 				)
 		),
-		'tx_nkwsubmenu_picture' => array(
-				'exclude' => 0,
-				'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.image',
-				'config' => array(
-						'maxitems' => 1,
-						'type' => 'inline',
-						'foreign_table' => 'sys_file_reference',
-						'foreign_field' => 'uid_foreign',
-						'foreign_sortby' => 'sorting_foreign',
-						'foreign_table_field' => 'tablenames',
-						'foreign_match_fields' => array(
-								'fieldname' => 'header_image'
-						),
-						'foreign_label' => 'uid_local',
-						'foreign_selector' => 'uid_local',
-						'foreign_selector_fieldTcaOverride' => array(
-								'config' => array(
-										'appearance' => array(
-												'elementBrowserType' => 'file',
-												'elementBrowserAllowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-										)
-								)
-						),
-						'filter' => array(
-								array(
-										'userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter->filterInlineChildren',
-										'parameters' => array(
-												'allowedFileExtensions' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-												'disallowedFileExtensions' => ''
-										)
-								)
-						),
-						'appearance' => array()
-				)
-		),
 		'tx_nkwsubmenu_picture_follow' => array(
 				'exclude' => 1,
 				'label' => 'LLL:EXT:nkwsubmenu/locallang_db.xml:pages.tx_nkwsubmenu_picture_follow',
@@ -116,5 +81,5 @@ $tempColumns = array(
 				)
 		),
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns, 1);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_nkwsubmenu_in_menu;;;;1-1-1,tx_nkwsubmenu_picture,tx_nkwsubmenu_picture_follow,tx_nkwsubmenu_picture_nofollow,tx_nkwsubmenu_knot,tx_nkwsubmenu_usecontent,tx_nkwsubmenu_showsidebar,tx_nkwsubmenu_knotheader');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_nkwsubmenu_in_menu;;;;1-1-1,tx_nkwsubmenu_picture_follow,tx_nkwsubmenu_picture_nofollow,tx_nkwsubmenu_knot,tx_nkwsubmenu_usecontent,tx_nkwsubmenu_showsidebar,tx_nkwsubmenu_knotheader');
