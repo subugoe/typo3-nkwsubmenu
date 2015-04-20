@@ -30,8 +30,7 @@
  * @package TYPO3
  * @subpackage tx_nkwsubmenu
  */
-
-class tx_nkwsubmenu_pi2 extends tslib_pibase {
+class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	public $prefixId = 'tx_nkwsubmenu_pi2';
 	public $scriptRelPath = 'pi2/class.tx_nkwsubmenu_pi2.php';
@@ -39,20 +38,32 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 	public $pi_checkCHash = TRUE;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $db;
+
+	/**
+	 * @var int
+	 */
+	protected $lang;
+
+	/**
 	 * The main method of the PlugIn
 	 *
 	 * @param string $content The PlugIn content
 	 * @param array $conf The PlugIn configuration
-	 * @return The content that is displayed on the website
+	 * @return string content that is displayed on the website
 	 */
 	public function main($content, $conf) {
 
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
+
 		// basics
 		$weAreHerePageId = $GLOBALS['TSFE']->id;
 		$this->lang = $GLOBALS['TSFE']->sys_language_uid;
+		$this->db = $GLOBALS['TYPO3_DB'];
 		// T3 hack
 		$saveAnchorTagParams = $GLOBALS['TSFE']->ATagParams;
 		$id = self::checkForAlienContent($weAreHerePageId);
@@ -62,10 +73,11 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 
 		$contentContent = '';
 
-			// get page content
+		// get page content
 		$pageContent = self::pageContent($id);
 		$contentContent .= '<h6>' . $this->pi_getLL('contentOfThisSite') . '</h6>';
 		if ($pageContent) {
+			$tmp = '';
 			foreach ($pageContent AS $key => $value) {
 				if ($value['colPos'] == 0) {
 					$tmp .= '<li>';
@@ -73,11 +85,11 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 					$tmp .= '</li>';
 				}
 			}
-				// hook to extend table of contents (add anchors etc.)
+			// hook to extend table of contents (add anchors etc.)
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'] as $userFunc) {
 					if ($userFunc) {
-						t3lib_div::callUserFunction($userFunc, $tmp, $this);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunc, $tmp, $this);
 					}
 				}
 			}
@@ -90,12 +102,12 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		}
 		$contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
 
-			// insert pictures in side-menu via hook
+		// insert pictures in side-menu via hook
 		$contentPictures = '<h6>' . $this->pi_getLL('sideBarImages') . '</h6>';
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
 				if ($userFunc) {
-					t3lib_div::callUserFunction($userFunc, $tmp, $this);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunc, $tmp, $this);
 				}
 			}
 			if ($tmp) {
@@ -109,23 +121,9 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 			$contentPictures = '';
 		}
 
-			// keywords
-
-		$keywords = self::keywordsForPage($weAreHerePageId, $this->conf['landing']);
-
-		if ($keywords) {
-			$contentKeywords = '<div id="tx-nkwsubmenu-pi2-keywordlist">';
-			$contentKeywords .= '<h6>' . $this->pi_getLL('keywordsOfThisSite') . '</h6>';
-			$contentKeywords .= '<ul>';
-			$contentKeywords .= $keywords;
-			$contentKeywords .= '</ul>';
-			$contentKeywords .= '</div>';
-		} else {
-			$contentKeywords = '';
-		}
-			// collect
-		$content = $contentContent . $contentPictures . $contentKeywords;
-			// return
+		// collect
+		$content = $contentContent . $contentPictures;
+		// return
 		return $this->pi_wrapInBaseClass($content);
 	}
 
@@ -137,70 +135,22 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 	 */
 	protected function checkForAlienContent($id) {
 
-		$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'uid, content_from_pid',
-			'pages',
-			'uid = ' . $id . $this->cObj->enableFields('pages'),
-			'',
-			'',
-			'');
-		while ($row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1)) {
+		$res1 = $this->db->exec_SELECTquery(
+				'uid, content_from_pid',
+				'pages',
+				'uid = ' . $id . $this->cObj->enableFields('pages'),
+				'',
+				'',
+				'');
+		while ($row1 = $this->db->sql_fetch_assoc($res1)) {
 			$contentFromPid = $row1['content_from_pid'];
 		}
-		if ($contentFromPid) {
+		if (isset($contentFromPid)) {
 			$return = $contentFromPid;
 		} else {
 			$return = FALSE;
 		}
 		return $return;
-	}
-
-	/**
-	 * Get Keywords for a page
-	 *
-	 * @param int $id
-	 * @param boolean $landingpage
-	 * @return string
-	 */
-	protected function keywordsForPage($id, $landingpage = FALSE) {
-
-		$cObj = t3lib_div::makeInstance('tslib_cObj');
-		$pageInfo = t3lib_BEfunc::getRecord('pages', $id);
-		$str = NULL;
-
-		if ($pageInfo['keywords']) {
-
-			$select = '*';
-			$local_table = 'pages';
-			$mm_table = 'tx_nkwkeywords_pages_keywords_mm';
-			$foreign_table = 'tx_nkwkeywords_domain_model_keywords';
-			$whereClause = ' AND ' . $local_table . '.uid = ' . $id;
-			$whereClause .= $GLOBALS['TSFE']->sys_page->enableFields($local_table);
-
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query (
-			 	$select,
-				$local_table,
-				$mm_table,
-				$foreign_table,
-				$whereClause
-			);
-
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-
-				$str .= '<li>';
-				$cObj->typoLink(
-					$row['title'],
-					array(
-						'parameter' => $landingpage,
-						'useCacheHash' => TRUE,
-						'additionalParams' => '&tx_nkwkeywords_keyword[keyword]=' . $row['uid']
-					)
-				);
-				$str .= '<a title="' . $row['title'] . '" href="' . $cObj->lastTypoLinkUrl . '">' . $row['title'] . '</a>';
-				$str .= '</li>';
-			}
-		}
-		return $str;
 	}
 
 	/**
@@ -216,16 +166,16 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 		$arr = array();
 		$id = intval($id);
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'uid, header, colPos',
-			'tt_content',
-			'pid = ' . $id . ' AND sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
-			'',
-			'sorting ASC',
-			''
+		$res = $this->db->exec_SELECTquery(
+				'uid, header, colPos',
+				'tt_content',
+				'pid = ' . $id . ' AND sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
+				'',
+				'sorting ASC',
+				''
 		);
 
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $this->db->sql_fetch_assoc($res)) {
 			$arr[$i]['uid'] = $row['uid'];
 			$arr[$i]['header'] = $row['header'];
 			$arr[$i]['colPos'] = $row['colPos'];
@@ -244,4 +194,3 @@ class tx_nkwsubmenu_pi2 extends tslib_pibase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi2/class.tx_nkwsubmenu_pi2.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi2/class.tx_nkwsubmenu_pi2.php']);
 }
-?>
