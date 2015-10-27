@@ -1,0 +1,13 @@
+{
+    "name": "subugoe/nkwsubmenu",
+    "description": "SUB menu configuration",
+    "license": "GPLv2",
+    "type": "typo3-cms-extension",
+    "authors": [
+        {
+            "name": "Ingo Pfennigstorf",
+            "email": "i.pfennigstorf@gmail.com"
+        }
+    ],
+    "require": {}
+}
