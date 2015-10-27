@@ -121,6 +121,15 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // collect
         $content = $contentContent . $contentPictures;
 
+        // does anybody want to have a completely own sidebar?
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['ownSidebar'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['ownSidebar'] as $userFunc) {
+                if ($userFunc) {
+                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunc, $content, $this);
+                }
+            }
+        }
+
         return $this->pi_wrapInBaseClass($content);
     }
 

@@ -9,5 +9,7 @@
             "email": "i.pfennigstorf@gmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+      "phpunit/phpunit": "~5.0"
+    }
 }
