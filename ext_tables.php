@@ -80,7 +80,25 @@ $tempColumns = [
             'maxitems' => 1,
         ]
     ],
+    'nodetitle' => [
+        'label' => 'LLL:EXT:nkwsubmenu/locallang_db.xml:pages.nodetitle',
+        'config' => ['type' => 'input', 'size' => '40', 'eval' => 'trim']
+
+    ]
 ];
+
+$overlayColumns = [
+    'nodetitle' => [
+        'label' => 'LLL:EXT:nkwsubmenu/locallang_db.xml:pages.nodetitle',
+        'config' => ['type' => 'input', 'size' => '40', 'eval' => 'trim']
+
+    ]
+];
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages_language_overlay', $overlayColumns);
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages',
-    'tx_nkwsubmenu_in_menu;;;;1-1-1,tx_nkwsubmenu_picture_follow,tx_nkwsubmenu_picture_nofollow,tx_nkwsubmenu_knot,tx_nkwsubmenu_usecontent,tx_nkwsubmenu_showsidebar,tx_nkwsubmenu_knotheader');
+    'tx_nkwsubmenu_in_menu;;;;1-1-1,tx_nkwsubmenu_picture_follow,tx_nkwsubmenu_picture_nofollow,tx_nkwsubmenu_knot,tx_nkwsubmenu_usecontent,tx_nkwsubmenu_showsidebar,tx_nkwsubmenu_knotheader,nodetitle');
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages_language_overlay', 'nodetitle');
