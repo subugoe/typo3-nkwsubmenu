@@ -31,7 +31,7 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $prefixId = 'tx_nkwsubmenu_pi2';
     public $scriptRelPath = 'pi2/class.tx_nkwsubmenu_pi2.php';
     public $extKey = 'nkwsubmenu';
-    public $pi_checkCHash = TRUE;
+    public $pi_checkCHash = true;
 
     /**
      * @var \TYPO3\CMS\Core\Database\DatabaseConnection
@@ -52,7 +52,6 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function main($content, $conf)
     {
-
         $this->conf = $conf;
         $this->pi_setPiVarDefaults();
         $this->pi_loadLL();
@@ -75,7 +74,7 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $contentContent .= '<h6>' . $this->pi_getLL('contentOfThisSite') . '</h6>';
         if ($pageContent) {
             $tmp = '';
-            foreach ($pageContent AS $key => $value) {
+            foreach ($pageContent as $key => $value) {
                 if ($value['colPos'] == 0) {
                     $tmp .= '<li>';
                     $tmp .= '<a title="' . $value['header'] . '" href="#c' . $value['uid'] . '">' . $value['header'] . '</a>';
@@ -141,7 +140,6 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function checkForAlienContent($id)
     {
-
         $res1 = $this->db->exec_SELECTquery(
             'uid, content_from_pid',
             'pages',
@@ -155,7 +153,7 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if (isset($contentFromPid)) {
             $return = $contentFromPid;
         } else {
-            $return = FALSE;
+            $return = false;
         }
         return $return;
     }
@@ -192,11 +190,10 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if (count($arr) > 0) {
             $return = $arr;
         } else {
-            $return = FALSE;
+            $return = false;
         }
         return $return;
     }
-
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwsubmenu/pi2/class.tx_nkwsubmenu_pi2.php']) {
