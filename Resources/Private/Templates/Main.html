@@ -1,0 +1,28 @@
+<f:if condition="{ownSidebar}">
+    <f:then>
+        {ownSidebar -> f:format.raw()}
+    </f:then>
+    <f:else>
+        <h3><f:translate key="contentOfThisSite" extensionName="nkwsubmenu"/></h3>
+
+        <div class="tx-nkwsubmenu-pi2-contentlist">
+            <ul>
+                <f:for each="{pageContent}" as="content">
+                    <li><f:link.page section="{content.uid}">{content.header}</f:link.page></li>
+                </f:for>
+                <f:if condition="{extendedContent}">
+                    {extendedContent -> f:format.raw()}
+                </f:if>
+            </ul>
+        </div>
+
+        <f:if condition="{contentPictures}">
+            <div class="tx-nkwsubmenu-pi2-imagelist">
+                <h3><f:translate key="sideBarImages" extensionName="nkwsubmenu"/></h3>
+                <div class="tx-nkwsubmenu-pi2-imagelist">
+                    {contentPictures}
+                </div>
+            </div>
+        </f:if>
+    </f:else>
+</f:if>

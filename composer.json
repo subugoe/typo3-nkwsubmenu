@@ -8,8 +8,5 @@
             "name": "Ingo Pfennigstorf",
             "email": "i.pfennigstorf@gmail.com"
         }
-    ],
-    "require-dev": {
-      "phpunit/phpunit": "~5.0"
-    }
+    ]
 }

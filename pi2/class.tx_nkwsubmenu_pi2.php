@@ -39,11 +39,6 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected $db;
 
     /**
-     * @var int
-     */
-    protected $lang;
-
-    /**
      * The main method of the PlugIn
      *
      * @param string $content The PlugIn content
@@ -53,74 +48,46 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public function main($content, $conf)
     {
         $this->conf = $conf;
-        $this->pi_setPiVarDefaults();
-        $this->pi_loadLL();
-
-        // basics
-        $weAreHerePageId = $GLOBALS['TSFE']->id;
-        $this->lang = $GLOBALS['TSFE']->sys_language_uid;
         $this->db = $GLOBALS['TYPO3_DB'];
-        // T3 hack
-        $saveAnchorTagParams = $GLOBALS['TSFE']->ATagParams;
-        $id = self::checkForAlienContent($weAreHerePageId);
-        if (!$id) {
-            $id = $weAreHerePageId;
-        }
+        $this->pi_setPiVarDefaults();
 
-        $contentContent = '';
+        $view = $this->initializeTemplate();
+
+        $id = $this->checkForAlienContent($GLOBALS['TSFE']->id);
+        if (!$id) {
+            $id = $GLOBALS['TSFE']->id;
+        }
 
         // get page content
-        $pageContent = self::pageContent($id);
-        $contentContent .= '<h6>' . $this->pi_getLL('contentOfThisSite') . '</h6>';
-        if ($pageContent) {
-            $tmp = '';
-            foreach ($pageContent as $key => $value) {
-                if ($value['colPos'] == 0) {
-                    $tmp .= '<li>';
-                    $tmp .= '<a title="' . $value['header'] . '" href="#c' . $value['uid'] . '">' . $value['header'] . '</a>';
-                    $tmp .= '</li>';
-                }
-            }
-            // hook to extend table of contents (add anchors etc.)
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'] as $userFunc) {
-                    if ($userFunc) {
-                        \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunc, $tmp, $this);
-                    }
-                }
-            }
-            if ($tmp) {
-                $contentContent .= '<ul>' . $tmp . '</ul>';
-            }
-            unset($tmp);
-        } else {
-            $contentContent .= '<p>' . $this->pi_getLL('noContentOfThisSite') . '</p>';
-        }
-        $contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
+        $view->assign('pageContent', $this->getPageContent($id));
+        $view->assign('extendedContent', $this->getExtendedContent());
+        $view->assign('contentPictures', $this->getContentPictures());
+        $view->assign('ownSidebar', $this->getOwnSidebar());
 
-        // insert pictures in side-menu via hook
-        $contentPictures = '<h6>' . $this->pi_getLL('sideBarImages') . '</h6>';
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
-                if ($userFunc) {
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunc, $tmp, $this);
-                }
-            }
-            if ($tmp) {
-                $contentPictures .= '<div id="tx-nkwsubmenu-pi2-imagelistframe">' . $tmp . '</div>';
-                $contentPictures = '<div id="tx-nkwsubmenu-pi2-imagelist">' . $contentPictures . '</div>';
-            } else {
-                $contentPictures = '';
-            }
-            unset($tmp);
-        } else {
-            $contentPictures = '';
-        }
+        return $view->render();
+    }
 
-        // collect
-        $content = $contentContent . $contentPictures;
+    /**
+     * @return \TYPO3\CMS\Fluid\View\StandaloneView
+     * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
+     */
+    protected function initializeTemplate()
+    {
+        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
+        $view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+        $view->setTemplateRootPaths(['EXT:nkwsubmenu/Resources/Private/Templates/']);
+        $view->setTemplate('Main');
 
-        // does anybody want to have a completely own sidebar?
+        return $view;
+    }
+
+    /**
+     *  does anybody want to have a completely own sidebar?
+     * @return string
+     */
+    protected function getOwnSidebar()
+    {
+        $content = '';
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['ownSidebar'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['ownSidebar'] as $userFunc) {
                 if ($userFunc) {
@@ -129,7 +96,45 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
 
-        return $this->pi_wrapInBaseClass($content);
+        return $content;
+    }
+
+    /**
+     * Insert pictures in side-menu via hook
+     *
+     * @return string
+     */
+    protected function getContentPictures()
+    {
+        $contentPictures = '';
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['addImages'] as $userFunc) {
+                if ($userFunc) {
+                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunc, $contentPictures, $this);
+                }
+            }
+        }
+
+        return $contentPictures;
+    }
+
+    /**
+     * Get additional string content via hook
+     *
+     * @return string
+     */
+    protected function getExtendedContent()
+    {
+        $extendedContent = '';
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'] as $userFunc) {
+                if ($userFunc) {
+                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunc, $extendedContent, $this);
+                }
+            }
+        }
+
+        return $extendedContent;
     }
 
     /**
@@ -146,7 +151,9 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'uid = ' . $id . $this->cObj->enableFields('pages'),
             '',
             '',
-            '');
+            ''
+        );
+
         while ($row1 = $this->db->sql_fetch_assoc($res1)) {
             $contentFromPid = $row1['content_from_pid'];
         }
@@ -166,33 +173,22 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @param int $id
      * @return mixed
      */
-    protected function pageContent($id)
+    protected function getPageContent($id)
     {
-        $i = 0;
-        $arr = [];
-        $id = intval($id);
 
-        $res = $this->db->exec_SELECTquery(
-            'uid, header, colPos',
+        /** @var \TYPO3\CMS\Frontend\Page\PageRepository $pageRepository */
+        $pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+
+        $content = $pageRepository->getRecordsByField(
             'tt_content',
-            'pid = ' . $id . ' AND sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
+            'pid',
+            $GLOBALS['TSFE']->id,
+            'AND sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
             '',
-            'sorting ASC',
-            ''
+            'sorting ASC'
         );
 
-        while ($row = $this->db->sql_fetch_assoc($res)) {
-            $arr[$i]['uid'] = $row['uid'];
-            $arr[$i]['header'] = $row['header'];
-            $arr[$i]['colPos'] = $row['colPos'];
-            $i++;
-        }
-        if (count($arr) > 0) {
-            $return = $arr;
-        } else {
-            $return = false;
-        }
-        return $return;
+        return $content;
     }
 }
 
