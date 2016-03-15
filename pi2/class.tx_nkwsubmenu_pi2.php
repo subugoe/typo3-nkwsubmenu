@@ -73,12 +73,10 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $pageContent = self::pageContent($id);
         $contentContent .= '<h6>' . $this->pi_getLL('contentOfThisSite') . '</h6>';
         if ($pageContent) {
-            $tmp = '';
+            $tmp = [];
             foreach ($pageContent as $key => $value) {
                 if ($value['colPos'] == 0) {
-                    $tmp .= '<li>';
-                    $tmp .= '<a title="' . $value['header'] . '" href="#c' . $value['uid'] . '">' . $value['header'] . '</a>';
-                    $tmp .= '</li>';
+                    $tmp[] = '<li><a title="' . $value['header'] . '" href="#c' . $value['uid'] . '">' . $value['header'] . '</a></li>';
                 }
             }
             // hook to extend table of contents (add anchors etc.)
@@ -89,14 +87,16 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     }
                 }
             }
-            if ($tmp) {
-                $contentContent .= '<ul>' . $tmp . '</ul>';
+            if ( count($tmp) > 1 ) {
+                $contentContent .= '<ul>' . implode('', $tmp) . '</ul>';
+                $contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
+            } else {
+                $contentContent = '';
             }
             unset($tmp);
         } else {
             $contentContent .= '<p>' . $this->pi_getLL('noContentOfThisSite') . '</p>';
         }
-        $contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
 
         // insert pictures in side-menu via hook
         $contentPictures = '<h6>' . $this->pi_getLL('sideBarImages') . '</h6>';
@@ -129,7 +129,7 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
 
-        return $this->pi_wrapInBaseClass($content);
+        return $content ? $this->pi_wrapInBaseClass($content) : '';
     }
 
     /**
