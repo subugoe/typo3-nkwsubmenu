@@ -73,12 +73,17 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $pageContent = self::pageContent($id);
         $contentContent .= '<h6>' . $this->pi_getLL('contentOfThisSite') . '</h6>';
         if ($pageContent) {
-            $tmp = [];
+            $contentElementCounter = 0;
+            $tmp = '';
             foreach ($pageContent as $key => $value) {
                 if ($value['colPos'] == 0) {
-                    $tmp[] = '<li><a title="' . $value['header'] . '" href="#c' . $value['uid'] . '">' . $value['header'] . '</a></li>';
+                    $tmp .= '<li><a title="' . $value['header'] . '" href="#c' . $value['uid'] . '">' . $value['header'] . '</a></li>';
+                    ++$contentElementCounter;
                 }
             }
+
+            $contentLenght = strlen($tmp);
+
             // hook to extend table of contents (add anchors etc.)
             if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'] as $userFunc) {
@@ -87,8 +92,8 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     }
                 }
             }
-            if ( count($tmp) > 1 ) {
-                $contentContent .= '<ul>' . implode('', $tmp) . '</ul>';
+            if ($contentElementCounter > 1 || (strlen($tmp) !== $contentLenght)) {
+                $contentContent .= '<ul>' . $tmp . '</ul>';
                 $contentContent = '<div id="tx-nkwsubmenu-pi2-contentlist">' . $contentContent . '</div>';
             } else {
                 $contentContent = '';
