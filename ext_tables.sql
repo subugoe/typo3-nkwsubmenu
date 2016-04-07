@@ -11,7 +11,3 @@ CREATE TABLE pages (
 	tx_nkwsubmenu_hideinfobox tinyint(3) DEFAULT '0' NOT NULL
 	tx_nkwsubmenu_knotheader text NOT NULL
 );
-
-CREATE TABLE pages_language_overlay (
-	nodetitle varchar(255) NOT NULL
-);
