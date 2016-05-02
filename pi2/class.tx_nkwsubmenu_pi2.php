@@ -34,14 +34,17 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $pi_checkCHash = true;
 
     /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $db;
-
-    /**
      * @var int
      */
     protected $lang;
+
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 
     /**
      * The main method of the PlugIn
@@ -59,7 +62,7 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // basics
         $weAreHerePageId = $GLOBALS['TSFE']->id;
         $this->lang = $GLOBALS['TSFE']->sys_language_uid;
-        $this->db = $GLOBALS['TYPO3_DB'];
+
         // T3 hack
         $saveAnchorTagParams = $GLOBALS['TSFE']->ATagParams;
         $id = self::checkForAlienContent($weAreHerePageId);
@@ -145,14 +148,14 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function checkForAlienContent($id)
     {
-        $res1 = $this->db->exec_SELECTquery(
+        $res1 = $this->getDatabaseConnection()->exec_SELECTquery(
             'uid, content_from_pid',
             'pages',
             'uid = ' . $id . $this->cObj->enableFields('pages'),
             '',
             '',
             '');
-        while ($row1 = $this->db->sql_fetch_assoc($res1)) {
+        while ($row1 = $this->getDatabaseConnection()->sql_fetch_assoc($res1)) {
             $contentFromPid = $row1['content_from_pid'];
         }
         if (isset($contentFromPid)) {
@@ -177,7 +180,7 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $arr = [];
         $id = intval($id);
 
-        $res = $this->db->exec_SELECTquery(
+        $res = $this->getDatabaseConnection()->exec_SELECTquery(
             'uid, header, colPos',
             'tt_content',
             'pid = ' . $id . ' AND sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
@@ -186,7 +189,7 @@ class tx_nkwsubmenu_pi2 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             ''
         );
 
-        while ($row = $this->db->sql_fetch_assoc($res)) {
+        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
             $arr[$i]['uid'] = $row['uid'];
             $arr[$i]['header'] = $row['header'];
             $arr[$i]['colPos'] = $row['colPos'];
